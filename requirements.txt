@@ -1,0 +1,14 @@
+# RETI-C Dependencies
+# Python 3.9+ required
+
+# UI Framework
+PyQt6>=6.4.0
+
+# Data Processing
+pandas>=1.5.0
+openpyxl>=3.0.0
+
+# Development Tools
+pytest>=7.0.0
+black>=22.0.0
+flake8>=5.0.0 

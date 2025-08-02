@@ -1,0 +1,126 @@
+/* RETI-C CFE Style Sheet */
+/* Based on CFE Style Guide */
+
+/* Main Window */
+QMainWindow {
+    background-color: #ffffff;
+    color: #111111;
+}
+
+/* Labels */
+QLabel {
+    color: #111111;
+    font-family: "Arial", sans-serif;
+    font-size: 12px;
+}
+
+QLabel[class="title"] {
+    font-size: 16px;
+    font-weight: bold;
+    color: #008E5A;
+}
+
+/* Form Layout */
+QFormLayout {
+    spacing: 10px;
+}
+
+/* Line Edit */
+QLineEdit {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 8px;
+    background-color: #ffffff;
+    color: #111111;
+    font-size: 12px;
+    min-height: 20px;
+}
+
+QLineEdit:focus {
+    border: 2px solid #008E5A;
+    outline: none;
+}
+
+/* Date Edit */
+QDateEdit {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 8px;
+    background-color: #ffffff;
+    color: #111111;
+    font-size: 12px;
+    min-height: 20px;
+}
+
+QDateEdit:focus {
+    border: 2px solid #008E5A;
+}
+
+/* Text Edit */
+QTextEdit {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 8px;
+    background-color: #ffffff;
+    color: #111111;
+    font-size: 12px;
+}
+
+QTextEdit:focus {
+    border: 2px solid #008E5A;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #008E5A;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: bold;
+    min-height: 30px;
+}
+
+QPushButton:hover {
+    background-color: #006B47;
+}
+
+QPushButton:pressed {
+    background-color: #004D33;
+}
+
+QPushButton[class="secondary"] {
+    background-color: #111111;
+    color: #ffffff;
+}
+
+QPushButton[class="secondary"]:hover {
+    background-color: #333333;
+}
+
+/* Message Box */
+QMessageBox {
+    background-color: #ffffff;
+    color: #111111;
+}
+
+QMessageBox QPushButton {
+    min-width: 80px;
+    min-height: 25px;
+}
+
+/* Success Message */
+QMessageBox QLabel[class="success"] {
+    color: #008E5A;
+}
+
+/* Error Message */
+QMessageBox QLabel[class="error"] {
+    color: #dc3545;
+}
+
+/* Warning Message */
+QMessageBox QLabel[class="warning"] {
+    color: #ffc107;
+} 
