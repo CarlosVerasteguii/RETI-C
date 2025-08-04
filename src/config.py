@@ -55,6 +55,25 @@ class Config:
         "Estado"
     ]
     
+    # --- Mensajes y Textos de la UI ---
+    MSG_ERROR_SERIAL_VACIO = "El número de serie no puede ser nulo o estar vacío."
+    MSG_CAMPO_REQUERIDO = "El campo '{field_name}' es obligatorio."
+    MSG_EXITO_REGISTRO = "Equipo con S/N '{serial_number}' ha sido registrado."
+    MSG_ERROR_GUARDADO = "No se pudo guardar el registro en el archivo Excel. Verifique los permisos o si el archivo está en uso."
+
+    # Títulos de MessageBox
+    MSG_TITULO_CAMPOS_REQUERIDOS = "Campos Requeridos"
+    MSG_TITULO_EXITO = "Éxito"
+    MSG_TITULO_ERROR_GUARDADO = "Error de Guardado"
+
+    # Textos de botones
+    MSG_BTN_LIMPIAR = "Limpiar Formulario"
+    MSG_BTN_GUARDAR = "Guardar Registro"
+    
+    # Valores por defecto y Formatos
+    DEFAULT_ESTADO = "Recibido"
+    FORMATO_FECHA = "yyyy-MM-dd"
+    
     @classmethod
     def ensure_directories(cls):
         """Ensure all required directories exist."""

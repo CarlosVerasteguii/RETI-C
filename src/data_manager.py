@@ -118,7 +118,7 @@ class DataManager:
         """
         # Validación de entrada para robustez
         if not serial_number or not str(serial_number).strip():
-            raise ValueError("El número de serie no puede ser nulo o estar vacío.")
+            raise ValueError(Config.MSG_ERROR_SERIAL_VACIO)
         
         try:
             # Usar el método existente para mantener consistencia arquitectónica

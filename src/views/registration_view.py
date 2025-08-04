@@ -46,7 +46,7 @@ class RegistrationView(QWidget):
 
         # Configurar valores por defecto
         self.fields['Fecha de Recepcion'].setDate(QDate.currentDate())
-        self.fields['Estado'].setText("Recibido")
+        self.fields['Estado'].setText(Config.DEFAULT_ESTADO)
         self.fields['Estado'].setReadOnly(True)
 
         parent_layout.addLayout(self.form_layout)
@@ -55,12 +55,12 @@ class RegistrationView(QWidget):
         button_layout = QHBoxLayout()
         button_layout.addStretch()
 
-        self.btn_limpiar = QPushButton("Limpiar Formulario")
+        self.btn_limpiar = QPushButton(Config.MSG_BTN_LIMPIAR)
         self.btn_limpiar.setObjectName("secondary_button")
         self.btn_limpiar.clicked.connect(self.clear_form)
         button_layout.addWidget(self.btn_limpiar)
         
-        self.btn_guardar = QPushButton("Guardar Registro")
+        self.btn_guardar = QPushButton(Config.MSG_BTN_GUARDAR)
         self.btn_guardar.setObjectName("primary_button")
         self.btn_guardar.clicked.connect(self.save_record)
         button_layout.addWidget(self.btn_guardar)
@@ -80,7 +80,7 @@ class RegistrationView(QWidget):
             elif isinstance(field_widget, QTextEdit):
                 field_widget.clear()
         
-        self.fields['Estado'].setText("Recibido")
+        self.fields['Estado'].setText(Config.DEFAULT_ESTADO)
         self.fields['Fecha de Recepcion'].setDate(QDate.currentDate())
 
 
@@ -91,15 +91,18 @@ class RegistrationView(QWidget):
         # Validación completa usando la lista de Config
         for required_field in Config.REQUIRED_FIELDS:
             if not data.get(required_field, '').strip():
-                QMessageBox.warning(self, "Campos Requeridos", f"El campo '{required_field}' es obligatorio.")
+                QMessageBox.warning(self, Config.MSG_TITULO_CAMPOS_REQUERIDOS, 
+                                   Config.MSG_CAMPO_REQUERIDO.format(field_name=required_field))
                 return
 
         # Usar el método correcto del data_manager y manejar el resultado
         if self.data_manager.add_record(data):
-            QMessageBox.information(self, "Éxito", f"Equipo con S/N '{data.get('Numero de Serie', '')}' ha sido registrado.")
+            serial_number = data.get('Numero de Serie', '')
+            QMessageBox.information(self, Config.MSG_TITULO_EXITO, 
+                                   Config.MSG_EXITO_REGISTRO.format(serial_number=serial_number))
             self.clear_form()
         else:
-            QMessageBox.critical(self, "Error de Guardado", "No se pudo guardar el registro en el archivo Excel. Verifique los permisos o si el archivo está en uso.")
+            QMessageBox.critical(self, Config.MSG_TITULO_ERROR_GUARDADO, Config.MSG_ERROR_GUARDADO)
     
     def get_form_data(self) -> dict:
         """Recopila los datos de todos los widgets del formulario en un diccionario."""
@@ -108,7 +111,7 @@ class RegistrationView(QWidget):
             if isinstance(field_widget, QLineEdit):
                 data[field_name] = field_widget.text()
             elif isinstance(field_widget, QDateEdit):
-                data[field_name] = field_widget.date().toString("yyyy-MM-dd")
+                data[field_name] = field_widget.date().toString(Config.FORMATO_FECHA)
             elif isinstance(field_widget, QTextEdit):
                 data[field_name] = field_widget.toPlainText()
         return data 
