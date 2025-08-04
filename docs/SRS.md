@@ -53,7 +53,11 @@ El archivo `inventario_equipos.xlsx` contendrá una única hoja con las siguient
 *   **RF-02.3:** Todas las operaciones de lectura y escritura se realizarán a través de la librería `pandas` para garantizar la integridad del formato `.xlsx`.
 
 **RF-03: Consulta por Número de Serie**
-*   **RF-03.1 (Post-MVP):** *Nota: La funcionalidad de consulta detallada se implementará post-MVP. El MVP se enfoca únicamente en el registro.*
+*   **RF-03.1:** La interfaz principal debe incluir una vista de búsqueda que permita consultar equipos por número de serie exacto.
+*   **RF-03.2:** Al realizar una búsqueda exitosa, el sistema debe mostrar todos los datos del registro encontrado de forma legible y organizada.
+*   **RF-03.3:** Si no se encuentra el número de serie, el sistema debe mostrar un mensaje informativo claro al usuario.
+*   **RF-03.4:** La funcionalidad de búsqueda debe estar disponible desde la navegación principal de la aplicación.
+*   **RF-03.5:** El método `find_by_serial` del `DataManager` debe estar cubierto por pruebas unitarias que verifiquen búsquedas exitosas y casos sin resultados.
 
 **RF-04: Interfaz de Usuario (UI/UX)**
 *   **RF-04.1:** La aplicación cargará al inicio el archivo `resources/styles.qss` para aplicar globalmente la identidad visual de CFE.

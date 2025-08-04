@@ -38,7 +38,7 @@ El proceso actual se basa en una hoja de cálculo compartida en la red. Aunque f
 **5.1. Alcance del MVP (Versión 1.0):**
 *   **F1: Creación de Registro de Equipo:** El sistema permitirá crear un nuevo registro con campos predefinidos. El ID será autogenerado y consecutivo, garantizando unicidad.
 *   **F2: Almacenamiento en Excel:** Todos los registros se guardarán como filas en un único archivo `.xlsx` ubicado en una ruta de red configurable.
-*   **F3: Consulta por Número de Serie:** La funcionalidad de búsqueda esencial permitirá encontrar un registro de equipo específico introduciendo su número de serie exacto.
+*   **F3: Consulta por Número de Serie:** La funcionalidad de búsqueda esencial permitirá encontrar un registro de equipo específico introduciendo su número de serie exacto. **INCLUIDO EN MVP**
 *   **F4: Interfaz Gráfica Alineada a Marca CFE:** La aplicación tendrá una interfaz de usuario limpia, funcional y que cumpla con las directrices de la "Guía Maestra de Estilo Visual y Esencia de Marca para Aplicaciones CFE".
 
 **5.2. Características Futuras (Post-MVP):**

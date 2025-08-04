@@ -101,3 +101,48 @@ def test_add_record_funciona_correctamente(data_manager_con_ruta_temporal):
     # CORRECCIÓN: Sintaxis correcta para acceder a la segunda fila (índice 1)
     registro_guardado_2 = df2.iloc[1]
     assert registro_guardado_2['ID'] == 2, "El ID autoincremental no funcionó."
+
+
+def test_find_by_serial_devuelve_registro_correcto(data_manager_con_ruta_temporal):
+    """
+    Verifica que el método find_by_serial encuentra y devuelve
+    el registro correcto como un diccionario.
+    """
+    # ARRANGE
+    dm = data_manager_con_ruta_temporal
+    
+    # Datos completos según SRS
+    registro_1 = {
+        'Tipo de Equipo': 'Laptop',
+        'Marca y Modelo': 'Dell XPS 15',
+        'Numero de Serie': 'SN-EXIST-001',
+        'Fecha de Recepcion': '2025-08-04',
+        'Descripcion del Problema': 'Pantalla azul.',
+        'Responsable Recepcion': 'Carlos V.',
+        'Estado': 'Recibido'
+    }
+    
+    registro_2 = {
+        'Tipo de Equipo': 'Monitor',
+        'Marca y Modelo': 'Samsung 24"',
+        'Numero de Serie': 'SN-EXIST-002',
+        'Fecha de Recepcion': '2025-08-04',
+        'Descripcion del Problema': 'No enciende.',
+        'Responsable Recepcion': 'Carlos V.',
+        'Estado': 'En Reparacion'
+    }
+    
+    dm.add_record(registro_1)
+    dm.add_record(registro_2)
+
+    # ACT
+    resultado_encontrado = dm.find_by_serial('SN-EXIST-002')
+    resultado_no_encontrado = dm.find_by_serial('SN-NON-EXIST-999')
+
+    # ASSERT
+    assert resultado_encontrado is not None, "No se encontró un registro que debería existir."
+    assert isinstance(resultado_encontrado, dict), "El resultado devuelto no es un diccionario."
+    assert resultado_encontrado['Tipo de Equipo'] == 'Monitor', "Se encontró el registro incorrecto."
+    assert resultado_encontrado['Estado'] == 'En Reparacion', "El estado no coincide."
+    
+    assert resultado_no_encontrado is None, "Se devolvió un registro cuando no debería haberse encontrado nada."

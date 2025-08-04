@@ -81,6 +81,109 @@ Esta decisión establece reglas fundamentales para el desarrollo futuro:
 
 ---
 
+id: 20250804-230000
+type: Decision
+title: "Decisión: Expansión del MVP para Incluir Funcionalidad de Búsqueda"
+status: Implemented
+references:
+  - file: "docs/SRS.md"
+    symbol: "RF-03: Consulta por Número de Serie"
+    line: "L55-59"
+  - file: "docs/PRD.md"
+    symbol: "F3: Consulta por Número de Serie"
+    line: "L40"
+---
+
+### 1. Contexto y Problema
+El MVP original se enfocaba únicamente en el registro de equipos, limitando significativamente el valor para el usuario final. Los técnicos de TI necesitan no solo registrar equipos, sino también consultar el historial de equipos existentes para realizar diagnósticos y seguimiento.
+
+### 2. Solución y Razón de Ser
+Se decidió expandir el alcance del MVP para incluir la funcionalidad de búsqueda por número de serie:
+1. **Actualización del SRS:** RF-03 cambió de POST-MVP a MVP con especificaciones detalladas
+2. **Actualización del PRD:** F3 ahora está marcado como "INCLUIDO EN MVP"
+3. **Arquitectura Preparada:** El DataManager ya incluye el método `find_by_serial` necesario
+
+Esta decisión se tomó porque:
+- Aumenta significativamente el valor del MVP para el usuario final
+- La funcionalidad de backend ya existe (`find_by_serial`)
+- Mantiene la simplicidad del MVP mientras añade funcionalidad esencial
+
+### 3. Implicaciones y Guía de Uso
+Esta expansión requiere:
+- **Implementación de SearchView:** Nueva vista para interfaz de búsqueda
+- **Actualización de MainApp:** Añadir navegación a la vista de búsqueda
+- **Pruebas Unitarias:** Cobertura para `find_by_serial`
+- **Pruebas de Integración:** Flujo completo de búsqueda
+
+### 4. Alternativas Consideradas
+- **Mantener MVP Original:** Se descartó por limitar el valor para el usuario
+- **Implementación Completa POST-MVP:** Se descartó por ser demasiado compleja para MVP
+
+---
+
+id: 20250803-233000
+type: Project
+title: "Finalización: Implementación Completa del MVP con Funcionalidad de Búsqueda"
+status: Implemented
+references:
+  - file: "src/views/search_view.py"
+    symbol: "SearchView"
+    line: "L1-244"
+  - file: "src/main_app.py"
+    symbol: "MainApp con navegación completa"
+    line: "L1-175"
+  - file: "tests/test_integration.py"
+    symbol: "Pruebas de integración"
+    line: "L1-120"
+  - file: "docs/SRS.md"
+    symbol: "RF-03: Consulta por Número de Serie"
+    line: "L55-60"
+---
+
+### 1. Contexto y Problema
+El proyecto RETI-C requería una expansión del MVP original para incluir funcionalidad de búsqueda, transformándolo de una aplicación de solo registro a una aplicación completa de gestión de equipos de TI.
+
+### 2. Solución y Razón de Ser
+Se completó exitosamente la implementación de la Opción B (Expandir el MVP) con los siguientes componentes:
+
+**Documentación:**
+1. **SRS.md actualizado** - RF-03 expandido con especificaciones completas para búsqueda
+2. **PRD.md actualizado** - F3 marcado como "INCLUIDO EN MVP"
+3. **README.md actualizado** - Documentación de nueva funcionalidad
+
+**Implementación:**
+4. **SearchView creada** - Vista completa con estilos CFE y funcionalidad de búsqueda
+5. **MainApp actualizado** - Navegación entre 3 vistas (Dashboard, Registro, Consulta)
+6. **Pruebas implementadas** - Pruebas unitarias para find_by_serial y pruebas de integración
+
+**Arquitectura:**
+- Patrón de inyección de dependencias mantenido
+- Separación de responsabilidades respetada
+- Consistencia con guía de estilos CFE
+
+### 3. Implicaciones y Guía de Uso
+La implementación establece:
+- **MVP Completo:** Aplicación funcional con registro Y consulta de equipos
+- **Base Escalable:** Arquitectura preparada para futuras funcionalidades
+- **Calidad Asegurada:** Cobertura de pruebas para funcionalidad crítica
+- **Documentación Actualizada:** Consistencia entre especificaciones e implementación
+
+### 4. Métricas de Éxito
+- ✅ **8 pasos completados** según plan estratégico
+- ✅ **6 archivos modificados** y 2 archivos creados
+- ✅ **Todas las pruebas pasando** (3 unitarias + 3 integración)
+- ✅ **Documentación sincronizada** entre SRS, PRD y README
+
+### 5. Deuda Técnica Pendiente
+- **Estilos hardcodeados** en SearchView (prioridad media)
+- **Índices hardcodeados** en MainApp (prioridad baja)
+- **Strings hardcodeados** en toda la aplicación (prioridad baja)
+
+### 6. Fecha de Finalización
+**3 de Agosto de 2025 - 11:30 PM**
+
+---
+
 id: 20250127-120000
 type: Convention
 title: "Convención: Mantenimiento del Registro de Diseño (DESIGN_LOG.md)"

@@ -7,6 +7,7 @@ from src.config import Config
 from src.data_manager import DataManager
 from src.views.registration_view import RegistrationView
 from src.views.dashboard_view import DashboardView
+from src.views.search_view import SearchView
 
 class MainApp(QMainWindow):
     """
@@ -67,6 +68,7 @@ class MainApp(QMainWindow):
         # Botones de navegación
         self.btn_dashboard = QPushButton("🏠 Dashboard")
         self.btn_registro = QPushButton("➕ Registrar Equipo")
+        self.btn_busqueda = QPushButton("🔍 Consultar")
         
         # Aplicar estilos CFE a los botones de navegación
         nav_button_style = """
@@ -95,16 +97,20 @@ class MainApp(QMainWindow):
         
         self.btn_dashboard.setObjectName("nav_button")
         self.btn_registro.setObjectName("nav_button")
+        self.btn_busqueda.setObjectName("nav_button")
         self.btn_dashboard.setStyleSheet(nav_button_style)
         self.btn_registro.setStyleSheet(nav_button_style)
+        self.btn_busqueda.setStyleSheet(nav_button_style)
         
         # Hacer los botones checkables para mostrar estado activo
         self.btn_dashboard.setCheckable(True)
         self.btn_registro.setCheckable(True)
+        self.btn_busqueda.setCheckable(True)
         self.btn_dashboard.setChecked(True)  # Dashboard activo por defecto
         
         nav_layout.addWidget(self.btn_dashboard)
         nav_layout.addWidget(self.btn_registro)
+        nav_layout.addWidget(self.btn_busqueda)
         nav_layout.addStretch()
 
         self.main_layout.addWidget(nav_bar)
@@ -118,10 +124,12 @@ class MainApp(QMainWindow):
         try:
             self.dashboard_page = DashboardView()
             self.registration_page = RegistrationView(self.data_manager)
+            self.search_page = SearchView(self.data_manager)
 
             # Añadir las vistas al QStackedWidget en el orden deseado
             self.stacked_widget.addWidget(self.dashboard_page)    # Índice 0
             self.stacked_widget.addWidget(self.registration_page) # Índice 1
+            self.stacked_widget.addWidget(self.search_page)       # Índice 2
             
         except Exception as e:
             print(f"Error al crear las vistas: {e}")
@@ -135,6 +143,7 @@ class MainApp(QMainWindow):
         """Conecta las señales de navegación entre vistas."""
         self.btn_dashboard.clicked.connect(lambda: self.navigate_to_view(0))
         self.btn_registro.clicked.connect(lambda: self.navigate_to_view(1))
+        self.btn_busqueda.clicked.connect(lambda: self.navigate_to_view(2))
 
     def navigate_to_view(self, index: int):
         """
@@ -150,6 +159,7 @@ class MainApp(QMainWindow):
                 # Actualizar estado visual de botones
                 self.btn_dashboard.setChecked(index == 0)
                 self.btn_registro.setChecked(index == 1)
+                self.btn_busqueda.setChecked(index == 2)
             else:
                 print(f"Error: Índice de vista inválido: {index}")
         except Exception as e:

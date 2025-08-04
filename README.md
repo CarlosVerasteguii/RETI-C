@@ -12,7 +12,8 @@ RETI-C es una aplicación de escritorio desarrollada para el departamento de TI 
 
 - **Registro de Equipos**: Interfaz intuitiva para registrar equipos de TI
 - **Almacenamiento Excel**: Persistencia de datos en archivos Excel
-- **Búsqueda por Número de Serie**: Consulta rápida de historial de equipos
+- **Búsqueda por Número de Serie**: Consulta rápida de historial de equipos con visualización detallada
+- **Navegación Intuitiva**: Sistema de navegación entre vistas (Dashboard, Registro, Consulta)
 - **Interfaz CFE**: Diseño alineado con la guía de estilos de CFE
 - **Validación de Datos**: Verificación automática de campos requeridos
 
@@ -75,7 +76,11 @@ RETI-C/
 │   ├── __init__.py
 │   ├── config.py           # Configuración de la aplicación
 │   ├── data_manager.py     # Gestión de datos Excel
-│   └── main_app.py         # Interfaz principal PyQt6
+│   ├── main_app.py         # Interfaz principal PyQt6
+│   └── views/              # Vistas de la aplicación
+│       ├── dashboard_view.py  # Vista de bienvenida
+│       ├── registration_view.py # Vista de registro
+│       └── search_view.py    # Vista de búsqueda
 ├── resources/               # Recursos de la aplicación
 │   ├── styles.qss          # Estilos CFE
 │   └── icons/              # Iconos (futuro)
@@ -154,7 +159,11 @@ pytest --cov=src
 
 - **config.py**: Configuración centralizada
 - **data_manager.py**: Lógica de negocio y persistencia
-- **main_app.py**: Interfaz de usuario
+- **main_app.py**: Contenedor principal y navegación
+- **views/**: Vistas de la aplicación
+  - **dashboard_view.py**: Vista de bienvenida
+  - **registration_view.py**: Vista de registro de equipos
+  - **search_view.py**: Vista de búsqueda por número de serie
 
 ### Convenciones
 
