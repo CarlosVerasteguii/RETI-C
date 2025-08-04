@@ -4,6 +4,47 @@ Este archivo es el registro canónico y estructurado de decisiones de diseño, p
 
 ---
 
+id: 20250803-220000
+type: Decision
+title: "Decisión: Implementación de Framework de Pruebas Automatizadas"
+status: Implemented
+references:
+  - file: "tests/test_data_manager.py"
+    symbol: "Pruebas unitarias del DataManager"
+  - file: "pytest.ini"
+    symbol: "Configuración de pytest"
+  - file: "requirements.txt"
+    symbol: "Dependencias de testing"
+---
+
+### 1. Contexto y Problema
+El proyecto carecía de pruebas automatizadas, lo que representaba un riesgo crítico para el desarrollo futuro. Sin una red de seguridad, cualquier cambio podría introducir regresiones sin detectarse, dificultando el mantenimiento y la evolución del código.
+
+### 2. Solución y Razón de Ser
+Se implementó un framework completo de pruebas automatizadas utilizando pytest y pytest-qt:
+1. **Estructura de Pruebas:** Se creó el directorio `tests/` con archivo `__init__.py` para hacerlo un paquete Python.
+2. **Configuración de Pytest:** Se añadió `pytest.ini` con configuración específica para el proyecto (pythonpath, testpaths).
+3. **Dependencias de Testing:** Se agregaron `pytest` y `pytest-qt` a `requirements.txt`.
+4. **Pruebas Unitarias Iniciales:** Se implementaron pruebas para el `DataManager` que verifican:
+   - Creación automática del archivo Excel con columnas correctas
+   - Funcionalidad de añadir registros con IDs autoincrementales
+   - Persistencia correcta de datos
+
+Este enfoque se eligió porque establece una base sólida para la calidad del código, facilita la detección de regresiones y mejora la confianza en futuras modificaciones.
+
+### 3. Implicaciones y Guía de Uso
+Esta decisión establece reglas fundamentales para el desarrollo futuro:
+- **Todas las nuevas funcionalidades DEBEN incluir pruebas unitarias** que verifiquen su comportamiento esperado.
+- **Las pruebas deben usar fixtures de pytest** para aislamiento y reutilización.
+- **Se debe usar archivos temporales** para pruebas que involucren persistencia de datos.
+- **El patrón AAA (Arrange, Act, Assert)** debe seguirse en todas las pruebas.
+
+### 4. Alternativas Consideradas
+- **Sin Pruebas Automatizadas:** Se descartó por el alto riesgo de regresiones y dificultad de mantenimiento.
+- **Otros Frameworks de Testing:** Se consideró unittest, pero pytest ofrece mejor sintaxis, fixtures y plugins especializados para PyQt.
+
+---
+
 id: 20250804-212000
 type: Decision
 title: "Decisión: Refactor a Arquitectura de Vistas e Inyección de Dependencias"

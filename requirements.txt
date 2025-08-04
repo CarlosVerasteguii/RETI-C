@@ -10,5 +10,6 @@ openpyxl>=3.0.0
 
 # Development Tools
 pytest>=7.0.0
+pytest-qt>=4.0.0
 black>=22.0.0
 flake8>=5.0.0 
