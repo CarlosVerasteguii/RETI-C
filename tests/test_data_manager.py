@@ -146,3 +146,44 @@ def test_find_by_serial_devuelve_registro_correcto(data_manager_con_ruta_tempora
     assert resultado_encontrado['Estado'] == 'En Reparacion', "El estado no coincide."
     
     assert resultado_no_encontrado is None, "Se devolvió un registro cuando no debería haberse encontrado nada."
+
+
+def test_find_by_serial_validaciones_entrada(data_manager_con_ruta_temporal):
+    """
+    Verifica que el método find_by_serial maneja correctamente las validaciones de entrada
+    y lanza ValueError para entradas inválidas.
+    """
+    # ARRANGE
+    dm = data_manager_con_ruta_temporal
+    
+    # Añadir un registro de prueba
+    registro_test = {
+        'Tipo de Equipo': 'Laptop',
+        'Marca y Modelo': 'Dell XPS 15',
+        'Numero de Serie': 'SN-VALID-001',
+        'Fecha de Recepcion': '2025-08-04',
+        'Descripcion del Problema': 'Pantalla azul.',
+        'Responsable Recepcion': 'Carlos V.',
+        'Estado': 'Recibido'
+    }
+    dm.add_record(registro_test)
+
+    # ACT & ASSERT - Casos que deben lanzar ValueError
+    with pytest.raises(ValueError, match="El número de serie no puede ser nulo o estar vacío"):
+        dm.find_by_serial("")  # String vacío
+        
+    with pytest.raises(ValueError, match="El número de serie no puede ser nulo o estar vacío"):
+        dm.find_by_serial("   ")  # Solo espacios
+        
+    with pytest.raises(ValueError, match="El número de serie no puede ser nulo o estar vacío"):
+        dm.find_by_serial(None)  # None
+    
+    # ACT & ASSERT - Casos que deben funcionar correctamente
+    # Búsqueda exitosa con espacios extra
+    resultado_con_espacios = dm.find_by_serial("  SN-VALID-001  ")
+    assert resultado_con_espacios is not None, "No se encontró registro con espacios extra"
+    assert resultado_con_espacios['Numero de Serie'] == 'SN-VALID-001', "No se normalizó correctamente la búsqueda"
+    
+    # Búsqueda sin resultados (debe devolver None, no lanzar error)
+    resultado_inexistente = dm.find_by_serial("SN-INEXISTENTE")
+    assert resultado_inexistente is None, "Debería devolver None para registros inexistentes"

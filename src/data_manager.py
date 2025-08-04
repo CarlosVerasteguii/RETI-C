@@ -112,14 +112,31 @@ class DataManager:
             
         Returns:
             Optional[Dict]: Record data if found, None otherwise
+            
+        Raises:
+            ValueError: If serial_number is None or empty
         """
+        # Validación de entrada para robustez
+        if not serial_number or not str(serial_number).strip():
+            raise ValueError("El número de serie no puede ser nulo o estar vacío.")
+        
         try:
+            # Usar el método existente para mantener consistencia arquitectónica
             df = self.load_data()
-            result = df[df['Numero de Serie'] == serial_number]
+            
+            # Validar DataFrame vacío
+            if df.empty:
+                return None
+            
+            # Búsqueda eficiente y exacta sin modificar el DataFrame original
+            search_term = str(serial_number).strip()
+            result = df[df['Numero de Serie'].astype(str).str.strip() == search_term]
             
             if not result.empty:
                 return result.iloc[0].to_dict()
             return None
+            
         except Exception as e:
+            # Mantener consistencia con el patrón de logging existente
             print(f"Error finding record: {e}")
             return None 
