@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD) - RETI-C
 **Versión:** 1.0
-**Fecha:** 02/08/2025
-**Responsable:** Carlos Verastegui
+**Fecha:** 01/08/2025
+**Responsable:** Carlos Verástegui
 
 ---
 

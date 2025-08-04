@@ -10,7 +10,7 @@ Date: 02/08/2025
 
 import sys
 from PyQt6.QtWidgets import QApplication
-from src.main_app import MainWindow
+from src.main_app import MainApp
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
     app.setOrganizationName("CFE")
     
     # Create and show main window
-    window = MainWindow()
+    window = MainApp()
     window.show()
     
     # Start the application
