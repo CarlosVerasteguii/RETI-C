@@ -8,6 +8,7 @@ Date: 02/08/2025
 """
 
 import pandas as pd
+import os
 from pathlib import Path
 from typing import Dict, List, Optional
 from .config import Config
@@ -17,23 +18,38 @@ class DataManager:
     """Manages Excel file operations for RETI-C application."""
     
     def __init__(self):
-        """Initialize the data manager."""
-        self.excel_path = Config.EXCEL_PATH
+        """Initialize the data manager with auto-fallback functionality."""
+        self.active_path: Path = None
+        self.is_network_mode: bool = False
+        self.connection_error: str | None = None
         self.columns = Config.COLUMNS
-        self.ensure_excel_exists()
+        
+        self._initialize_path()
+        self._ensure_excel_exists()
     
-    def ensure_excel_exists(self) -> None:
-        """
-        Ensure the Excel file exists with proper headers.
-        Creates the file if it doesn't exist.
-        """
-        if not self.excel_path.exists():
-            # Create directory if it doesn't exist
-            self.excel_path.parent.mkdir(exist_ok=True)
-            
-            # Create empty DataFrame with headers
+    def _initialize_path(self):
+        """Intenta establecer la ruta de red. Si falla, hace fallback a la local."""
+        try:
+            network_dir = Config.EXCEL_NETWORK_PATH.parent
+            # Validación de existencia y permisos de escritura (más robusta)
+            if network_dir.exists() and os.access(network_dir, os.W_OK):
+                self.active_path = Config.EXCEL_NETWORK_PATH
+                self.is_network_mode = True
+                print("INFO: Conexión de red exitosa. Usando ruta de producción.")
+            else:
+                raise ConnectionError("Directorio de red no existe o no hay permisos de escritura.")
+        except Exception as e:
+            self.connection_error = str(e)
+            print(f"ADVERTENCIA: No se pudo usar la ruta de red ({self.connection_error}). Haciendo fallback a modo local.")
+            self.active_path = Config.EXCEL_LOCAL_PATH
+            self.is_network_mode = False
+
+    def _ensure_excel_exists(self):
+        """Verifica que el archivo Excel exista en la ruta activa; si no, lo crea."""
+        if not self.active_path.exists():
             df = pd.DataFrame(columns=self.columns)
-            df.to_excel(self.excel_path, index=False)
+            self.active_path.parent.mkdir(parents=True, exist_ok=True)
+            df.to_excel(self.active_path, index=False)
     
     def load_data(self) -> pd.DataFrame:
         """
@@ -43,7 +59,7 @@ class DataManager:
             pd.DataFrame: The loaded data
         """
         try:
-            return pd.read_excel(self.excel_path)
+            return pd.read_excel(self.active_path)
         except Exception as e:
             print(f"Error loading data: {e}")
             return pd.DataFrame(columns=self.columns)
@@ -59,7 +75,7 @@ class DataManager:
             bool: True if successful, False otherwise
         """
         try:
-            df.to_excel(self.excel_path, index=False)
+            df.to_excel(self.active_path, index=False)
             return True
         except Exception as e:
             print(f"Error saving data: {e}")

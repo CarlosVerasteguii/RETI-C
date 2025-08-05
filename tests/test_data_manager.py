@@ -15,9 +15,11 @@ def temp_excel_path(tmp_path):
 @pytest.fixture
 def data_manager_con_ruta_temporal(temp_excel_path, monkeypatch):
     """Crea una instancia de DataManager que usa la ruta de archivo temporal."""
-    # CORRECCIÓN: Usar EXCEL_PATH en lugar de DATA_FILE_PATH
-    monkeypatch.setattr(Config, 'EXCEL_PATH', temp_excel_path)
-    monkeypatch.setattr(Config, 'DATA_DIR', os.path.dirname(temp_excel_path))
+    # Actualizado para el sistema auto-fallback: forzar modo red con ruta temporal
+    monkeypatch.setattr(Config, 'EXCEL_NETWORK_PATH', temp_excel_path)
+    monkeypatch.setattr(Config, 'EXCEL_LOCAL_PATH', temp_excel_path)
+    # Simular que siempre hay acceso de red para las pruebas existentes
+    monkeypatch.setattr('os.access', lambda path, mode: True)
     
     dm = DataManager()
     return dm
@@ -31,8 +33,8 @@ def test_inicializacion_crea_excel_si_no_existe(data_manager_con_ruta_temporal):
     """
     # ARRANGE
     dm = data_manager_con_ruta_temporal
-    # CORRECCIÓN: Usar excel_path en lugar de data_file_path
-    excel_path = dm.excel_path
+    # Actualizado: Usar active_path en lugar de excel_path
+    excel_path = dm.active_path
 
     # ACT (La acción ocurrió en la fixture al crear la instancia)
     
@@ -52,8 +54,8 @@ def test_add_record_funciona_correctamente(data_manager_con_ruta_temporal):
     """
     # ARRANGE
     dm = data_manager_con_ruta_temporal
-    # CORRECCIÓN: Usar excel_path en lugar de data_file_path
-    excel_path = dm.excel_path
+    # Actualizado: Usar active_path en lugar de excel_path
+    excel_path = dm.active_path
 
     # Datos completos para el primer registro
     nuevo_registro_1 = {

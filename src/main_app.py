@@ -1,7 +1,7 @@
 # src/main_app.py
 import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
-                             QHBoxLayout, QPushButton, QStackedWidget)
+                             QHBoxLayout, QPushButton, QStackedWidget, QStatusBar)
 from PyQt6.QtCore import Qt
 from src.config import Config
 from src.data_manager import DataManager
@@ -33,6 +33,9 @@ class MainApp(QMainWindow):
         
         # Iniciar en la vista del Dashboard
         self.stacked_widget.setCurrentIndex(0)
+        
+        # Configurar estado de conexión en la barra de estado
+        self.update_connection_status()
 
     def setup_ui(self):
         """Configura la interfaz de usuario principal."""
@@ -48,6 +51,9 @@ class MainApp(QMainWindow):
 
         # Área de contenido con vistas apiladas
         self.setup_stacked_widget()
+
+        # Barra de estado
+        self.setup_status_bar()
 
     def setup_navigation_bar(self):
         """Crea y configura la barra de navegación superior con estilos CFE."""
@@ -164,6 +170,21 @@ class MainApp(QMainWindow):
                 print(f"Error: Índice de vista inválido: {index}")
         except Exception as e:
             print(f"Error al navegar a la vista {index}: {e}")
+    
+    def setup_status_bar(self):
+        """Configura la barra de estado para mostrar información de conexión."""
+        self.status_bar = QStatusBar()
+        self.setStatusBar(self.status_bar)
+    
+    def update_connection_status(self):
+        """Actualiza la barra de estado con el estado de conexión actual."""
+        if self.data_manager.is_network_mode:
+            self.status_bar.showMessage("✅ Conectado a la Red Corporativa")
+            self.status_bar.setStyleSheet(f"background-color: {Config.COLOR_CFE_GREEN}; color: white; font-weight: bold;")
+        else:
+            message = f"⚠️ Trabajando en Modo Local. Causa: {self.data_manager.connection_error}"
+            self.status_bar.showMessage(message)
+            self.status_bar.setStyleSheet("background-color: #FFA500; color: black; font-weight: bold;")
     
     def load_styles(self):
         """Carga los estilos CFE si están disponibles."""

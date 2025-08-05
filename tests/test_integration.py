@@ -42,8 +42,11 @@ def main_app_with_data(qtbot, monkeypatch, temp_excel_path):
     """
     Crea una instancia de MainApp con datos de prueba.
     """
-    # Configurar ruta temporal para Excel
-    monkeypatch.setattr(Config, 'EXCEL_PATH', Path(temp_excel_path))
+    # Configurar ruta temporal para Excel (sistema auto-fallback)
+    monkeypatch.setattr(Config, 'EXCEL_NETWORK_PATH', Path(temp_excel_path))
+    monkeypatch.setattr(Config, 'EXCEL_LOCAL_PATH', Path(temp_excel_path))
+    # Simular que siempre hay acceso de red para las pruebas de integración
+    monkeypatch.setattr('os.access', lambda path, mode: True)
     
     # Crear DataManager y añadir datos de prueba
     dm = DataManager()
