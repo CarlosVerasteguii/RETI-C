@@ -14,13 +14,13 @@ class MainApp(QMainWindow):
     La ventana principal de la aplicación RETI-C.
     Actúa como el contenedor principal, gestionando la navegación entre vistas.
     """
-    def __init__(self):
+    def __init__(self, data_manager=None):
         super().__init__()
         self.setWindowTitle(f"{Config.APP_NAME} v{Config.APP_VERSION}")
         self.setGeometry(*Config.WINDOW_MAIN_GEOMETRY)
 
-        # Inicializar servicios
-        self.data_manager = DataManager()
+        # Inicializar servicios (DataManager puede ser None inicialmente)
+        self.data_manager = data_manager
         
         # Cargar estilos CFE
         self.load_styles()
@@ -34,8 +34,9 @@ class MainApp(QMainWindow):
         # Iniciar en la vista del Dashboard
         self.stacked_widget.setCurrentIndex(0)
         
-        # Configurar estado de conexión en la barra de estado
-        self.update_connection_status()
+        # Configurar estado de conexión en la barra de estado (solo si DataManager está disponible)
+        if self.data_manager:
+            self.update_connection_status()
 
     def setup_ui(self):
         """Configura la interfaz de usuario principal."""
@@ -129,13 +130,30 @@ class MainApp(QMainWindow):
         # Crear instancias de las vistas con manejo de errores
         try:
             self.dashboard_page = DashboardView()
-            self.registration_page = RegistrationView(self.data_manager)
-            self.search_page = SearchView(self.data_manager)
+            
+            # Crear vistas que requieren DataManager (pueden ser None inicialmente)
+            self.registration_page = RegistrationView(self.data_manager) if self.data_manager else None
+            self.search_page = SearchView(self.data_manager) if self.data_manager else None
 
             # Añadir las vistas al QStackedWidget en el orden deseado
             self.stacked_widget.addWidget(self.dashboard_page)    # Índice 0
-            self.stacked_widget.addWidget(self.registration_page) # Índice 1
-            self.stacked_widget.addWidget(self.search_page)       # Índice 2
+            
+            # Añadir placeholders si las vistas no están disponibles
+            if self.registration_page:
+                self.stacked_widget.addWidget(self.registration_page) # Índice 1
+            else:
+                from PyQt6.QtWidgets import QLabel
+                placeholder_reg = QLabel("Cargando vista de registro...")
+                placeholder_reg.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.stacked_widget.addWidget(placeholder_reg)
+                
+            if self.search_page:
+                self.stacked_widget.addWidget(self.search_page)       # Índice 2
+            else:
+                from PyQt6.QtWidgets import QLabel
+                placeholder_search = QLabel("Cargando vista de búsqueda...")
+                placeholder_search.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.stacked_widget.addWidget(placeholder_search)
             
         except Exception as e:
             print(f"Error al crear las vistas: {e}")
@@ -178,6 +196,11 @@ class MainApp(QMainWindow):
     
     def update_connection_status(self):
         """Actualiza la barra de estado con el estado de conexión actual."""
+        if not self.data_manager:
+            self.status_bar.showMessage("⏳ Inicializando...")
+            self.status_bar.setStyleSheet("background-color: #FFA500; color: black; font-weight: bold;")
+            return
+            
         if self.data_manager.is_network_mode:
             self.status_bar.showMessage("✅ Conectado a la Red Corporativa")
             self.status_bar.setStyleSheet(f"background-color: {Config.COLOR_CFE_GREEN}; color: white; font-weight: bold;")

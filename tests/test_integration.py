@@ -76,17 +76,8 @@ def main_app_with_data(qtbot, monkeypatch, temp_excel_path):
     for record in test_records:
         dm.add_record(record)
     
-    # Crear MainApp
-    main_app = MainApp()
-    
-    # Reemplazar DataManager con nuestra instancia con datos
-    main_app.data_manager = dm
-    
-    # Asegurar que las vistas usen el DataManager correcto
-    if hasattr(main_app, 'registration_page'):
-        main_app.registration_page.data_manager = dm
-    if hasattr(main_app, 'search_page'):
-        main_app.search_page.data_manager = dm
+    # Crear MainApp con DataManager (nuevo comportamiento)
+    main_app = MainApp(dm)
     
     # Mostrar la aplicación (necesario para que los widgets estén listos)
     main_app.show()
