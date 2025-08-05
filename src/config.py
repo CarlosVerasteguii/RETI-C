@@ -73,6 +73,24 @@ class Config:
     # Valores por defecto y Formatos
     DEFAULT_ESTADO = "Recibido"
     FORMATO_FECHA = "yyyy-MM-dd"
+
+    # --- Constantes de Estilos y UI ---
+    # Paleta de Colores Corporativa CFE (Referencia: CFE_Style_Guide.md - Sección 2.1)
+    COLOR_CFE_GREEN = "#008E5A"          # Verde principal CFE
+    COLOR_CFE_GREEN_DARK = "#006B47"     # Verde oscuro CFE  
+    COLOR_CFE_GREEN_VERY_DARK = "#004D33" # Verde muy oscuro CFE
+    COLOR_CFE_TEXT_ON_GREEN = "#FFFFFF"   # Texto sobre verde CFE
+    COLOR_CFE_BLACK = "#111111"          # Negro CFE
+    COLOR_GRAY_TEXT = "#666666"          # Gris para texto secundario
+    COLOR_GRAY_LIGHT_BG = "#f8f9fa"      # Gris claro para fondos
+
+    # Geometría de Ventanas
+    WINDOW_MAIN_GEOMETRY = (100, 100, 950, 750)  # x, y, width, height
+
+    # Dimensiones de Componentes UI
+    UI_TEXTEDIT_MAX_HEIGHT = 60
+    UI_VIEW_MARGINS = (40, 40, 40, 40)  # left, top, right, bottom
+    UI_LAYOUT_SPACING = 20
     
     @classmethod
     def ensure_directories(cls):

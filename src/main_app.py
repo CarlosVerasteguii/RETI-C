@@ -17,7 +17,7 @@ class MainApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(f"{Config.APP_NAME} v{Config.APP_VERSION}")
-        self.setGeometry(100, 100, 950, 750)
+        self.setGeometry(*Config.WINDOW_MAIN_GEOMETRY)
 
         # Inicializar servicios
         self.data_manager = DataManager()
@@ -53,12 +53,12 @@ class MainApp(QMainWindow):
         """Crea y configura la barra de navegación superior con estilos CFE."""
         nav_bar = QWidget()
         nav_bar.setObjectName("nav_bar")
-        nav_bar.setStyleSheet("""
-            #nav_bar { 
-                background-color: #008E5A; 
-                border-bottom: 2px solid #006B47;
+        nav_bar.setStyleSheet(f"""
+            #nav_bar {{ 
+                background-color: {Config.COLOR_CFE_GREEN}; 
+                border-bottom: 2px solid {Config.COLOR_CFE_GREEN_DARK};
                 min-height: 50px;
-            }
+            }}
         """)
         
         nav_layout = QHBoxLayout(nav_bar)
@@ -71,28 +71,28 @@ class MainApp(QMainWindow):
         self.btn_busqueda = QPushButton("🔍 Consultar")
         
         # Aplicar estilos CFE a los botones de navegación
-        nav_button_style = """
-            QPushButton {
+        nav_button_style = f"""
+            QPushButton {{
                 background-color: transparent;
-                color: white;
+                color: {Config.COLOR_CFE_TEXT_ON_GREEN};
                 border: 1px solid transparent;
                 padding: 8px 16px;
                 font-weight: bold;
                 font-size: 14px;
                 border-radius: 4px;
                 min-width: 140px;
-            }
-            QPushButton:hover {
-                background-color: #006B47;
-                border: 1px solid #004D33;
-            }
-            QPushButton:pressed {
-                background-color: #004D33;
-            }
-            QPushButton:checked {
-                background-color: #006B47;
-                border: 1px solid #004D33;
-            }
+            }}
+            QPushButton:hover {{
+                background-color: {Config.COLOR_CFE_GREEN_DARK};
+                border: 1px solid {Config.COLOR_CFE_GREEN_VERY_DARK};
+            }}
+            QPushButton:pressed {{
+                background-color: {Config.COLOR_CFE_GREEN_VERY_DARK};
+            }}
+            QPushButton:checked {{
+                background-color: {Config.COLOR_CFE_GREEN_DARK};
+                border: 1px solid {Config.COLOR_CFE_GREEN_VERY_DARK};
+            }}
         """
         
         self.btn_dashboard.setObjectName("nav_button")

@@ -12,9 +12,9 @@ import os
 import tempfile
 import pandas as pd
 from pathlib import Path
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication
-from PySide6.QtTest import QTest
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication
+from PyQt6.QtTest import QTest
 
 from src.main_app import MainApp
 from src.data_manager import DataManager

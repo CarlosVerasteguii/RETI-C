@@ -16,7 +16,7 @@ class DashboardView(QWidget):
         """Configura la interfaz de usuario del dashboard."""
         main_layout = QVBoxLayout(self)
         main_layout.setSpacing(30)
-        main_layout.setContentsMargins(40, 40, 40, 40)
+        main_layout.setContentsMargins(*Config.UI_VIEW_MARGINS)
         
         # Header Section
         self.create_header_section(main_layout)
@@ -35,25 +35,25 @@ class DashboardView(QWidget):
         # Título principal
         title_label = QLabel(f"Sistema {Config.APP_NAME}")
         title_label.setObjectName("dashboard_title")
-        title_label.setStyleSheet("""
-            #dashboard_title {
-                color: #008E5A;
+        title_label.setStyleSheet(f"""
+            #dashboard_title {{
+                color: {Config.COLOR_CFE_GREEN};
                 font-size: 32px;
                 font-weight: bold;
                 margin-bottom: 10px;
-            }
+            }}
         """)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         # Subtítulo descriptivo
         subtitle_label = QLabel("Registro de Equipos de Tecnologías de Información")
         subtitle_label.setObjectName("dashboard_subtitle")
-        subtitle_label.setStyleSheet("""
-            #dashboard_subtitle {
-                color: #666666;
+        subtitle_label.setStyleSheet(f"""
+            #dashboard_subtitle {{
+                color: {Config.COLOR_GRAY_TEXT};
                 font-size: 16px;
                 margin-bottom: 20px;
-            }
+            }}
         """)
         subtitle_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
@@ -79,14 +79,14 @@ class DashboardView(QWidget):
         """Crea la sección de información del sistema."""
         info_frame = QFrame()
         info_frame.setObjectName("info_frame")
-        info_frame.setStyleSheet("""
-            #info_frame {
-                background-color: #f8f9fa;
+        info_frame.setStyleSheet(f"""
+            #info_frame {{
+                background-color: {Config.COLOR_GRAY_LIGHT_BG};
                 border: 1px solid #e9ecef;
                 border-radius: 8px;
                 padding: 20px;
                 margin: 20px 0px;
-            }
+            }}
         """)
         info_frame.setMaximumWidth(600)
         info_frame.setFixedHeight(150)
@@ -96,12 +96,12 @@ class DashboardView(QWidget):
         
         # Información de la versión
         version_label = QLabel(f"Versión {Config.APP_VERSION}")
-        version_label.setStyleSheet("font-weight: bold; color: #008E5A; font-size: 14px;")
+        version_label.setStyleSheet(f"font-weight: bold; color: {Config.COLOR_CFE_GREEN}; font-size: 14px;")
         version_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         # Información organizacional
         org_label = QLabel(f"{Config.ORGANIZATION} - Departamento de TI")
-        org_label.setStyleSheet("color: #666666; font-size: 12px; margin-top: 5px;")
+        org_label.setStyleSheet(f"color: {Config.COLOR_GRAY_TEXT}; font-size: 12px; margin-top: 5px;")
         org_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         # Funcionalidades disponibles

@@ -38,7 +38,7 @@ class RegistrationView(QWidget):
                 self.fields[field_name] = QDateEdit()
             elif field_name in ['Descripcion del Problema', 'Historial Intervenciones']:
                 self.fields[field_name] = QTextEdit()
-                self.fields[field_name].setMaximumHeight(60)
+                self.fields[field_name].setMaximumHeight(Config.UI_TEXTEDIT_MAX_HEIGHT)
             else:
                 self.fields[field_name] = QLineEdit()
             

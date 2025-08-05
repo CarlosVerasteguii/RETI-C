@@ -18,8 +18,8 @@ class SearchView(QWidget):
     def setup_ui(self):
         """Configura la interfaz de usuario de búsqueda."""
         main_layout = QVBoxLayout(self)
-        main_layout.setSpacing(20)
-        main_layout.setContentsMargins(40, 40, 40, 40)
+        main_layout.setSpacing(Config.UI_LAYOUT_SPACING)
+        main_layout.setContentsMargins(*Config.UI_VIEW_MARGINS)
         
         # Header
         self.create_header_section(main_layout)
@@ -40,24 +40,24 @@ class SearchView(QWidget):
         
         title_label = QLabel("🔍 Consulta de Equipos")
         title_label.setObjectName("search_title")
-        title_label.setStyleSheet("""
-            #search_title {
-                color: #008E5A;
+        title_label.setStyleSheet(f"""
+            #search_title {{
+                color: {Config.COLOR_CFE_GREEN};
                 font-size: 28px;
                 font-weight: bold;
                 margin-bottom: 10px;
-            }
+            }}
         """)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         subtitle_label = QLabel("Busca el historial completo de un equipo por su número de serie")
         subtitle_label.setObjectName("search_subtitle")
-        subtitle_label.setStyleSheet("""
-            #search_subtitle {
-                color: #666666;
+        subtitle_label.setStyleSheet(f"""
+            #search_subtitle {{
+                color: {Config.COLOR_GRAY_TEXT};
                 font-size: 14px;
                 margin-bottom: 20px;
-            }
+            }}
         """)
         subtitle_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
@@ -69,13 +69,13 @@ class SearchView(QWidget):
         """Crea la sección de búsqueda."""
         search_frame = QFrame()
         search_frame.setObjectName("search_frame")
-        search_frame.setStyleSheet("""
-            #search_frame {
-                background-color: #f8f9fa;
+        search_frame.setStyleSheet(f"""
+            #search_frame {{
+                background-color: {Config.COLOR_GRAY_LIGHT_BG};
                 border: 1px solid #dee2e6;
                 border-radius: 8px;
                 padding: 20px;
-            }
+            }}
         """)
         
         search_layout = QVBoxLayout(search_frame)
@@ -89,37 +89,37 @@ class SearchView(QWidget):
         
         self.serial_input = QLineEdit()
         self.serial_input.setPlaceholderText("Ej: SN-001-ABC123")
-        self.serial_input.setStyleSheet("""
-            QLineEdit {
+        self.serial_input.setStyleSheet(f"""
+            QLineEdit {{
                 padding: 10px;
                 border: 2px solid #dee2e6;
                 border-radius: 4px;
                 font-size: 14px;
-            }
-            QLineEdit:focus {
-                border-color: #008E5A;
-            }
+            }}
+            QLineEdit:focus {{
+                border-color: {Config.COLOR_CFE_GREEN};
+            }}
         """)
         
         self.search_button = QPushButton("🔍 Buscar")
         self.search_button.setObjectName("primary_button")
-        self.search_button.setStyleSheet("""
-            QPushButton {
-                background-color: #008E5A;
-                color: white;
+        self.search_button.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {Config.COLOR_CFE_GREEN};
+                color: {Config.COLOR_CFE_TEXT_ON_GREEN};
                 border: none;
                 padding: 10px 20px;
                 border-radius: 4px;
                 font-weight: bold;
                 font-size: 14px;
                 min-width: 100px;
-            }
-            QPushButton:hover {
-                background-color: #006B47;
-            }
-            QPushButton:pressed {
-                background-color: #004D33;
-            }
+            }}
+            QPushButton:hover {{
+                background-color: {Config.COLOR_CFE_GREEN_DARK};
+            }}
+            QPushButton:pressed {{
+                background-color: {Config.COLOR_CFE_GREEN_VERY_DARK};
+            }}
         """)
         
         input_layout.addWidget(label)
@@ -152,28 +152,28 @@ class SearchView(QWidget):
         # Results Header
         self.results_header = QLabel("Resultados de la búsqueda")
         self.results_header.setObjectName("results_header")
-        self.results_header.setStyleSheet("""
-            #results_header {
-                color: #008E5A;
+        self.results_header.setStyleSheet(f"""
+            #results_header {{
+                color: {Config.COLOR_CFE_GREEN};
                 font-size: 18px;
                 font-weight: bold;
                 margin-bottom: 10px;
-            }
+            }}
         """)
         
         # Results Content
         self.results_text = QTextEdit()
         self.results_text.setReadOnly(True)
         self.results_text.setMaximumHeight(300)
-        self.results_text.setStyleSheet("""
-            QTextEdit {
+        self.results_text.setStyleSheet(f"""
+            QTextEdit {{
                 border: 1px solid #dee2e6;
                 border-radius: 4px;
                 padding: 10px;
                 font-family: 'Consolas', monospace;
                 font-size: 12px;
-                background-color: #f8f9fa;
-            }
+                background-color: {Config.COLOR_GRAY_LIGHT_BG};
+            }}
         """)
         
         results_layout.addWidget(self.results_header)
