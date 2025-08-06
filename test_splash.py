@@ -22,7 +22,7 @@ class ProfessionalSplashScreen(QWidget):
         super().__init__()
         
         # --- Configuración de la Ventana ---
-        self.setFixedSize(600, 400)
+        self.setFixedSize(700, 650)  # Ventana más grande para acomodar el logo
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint)
         self.setWindowTitle("RETI-C - Iniciando...")
         
@@ -56,7 +56,7 @@ class ProfessionalSplashScreen(QWidget):
         # Logo CFE centrado
         self.logo_label = QLabel()
         self.logo_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.logo_label.setFixedSize(250, 125) # Tamaño optimizado
+        self.logo_label.setFixedSize(630, 600) # Tamaño mucho más grande para máxima prominencia
         center_layout.addWidget(self.logo_label, alignment=Qt.AlignmentFlag.AlignCenter)
         
         center_layout.addStretch() # Empuja el logo hacia arriba
@@ -101,28 +101,21 @@ class ProfessionalSplashScreen(QWidget):
         self.timer.start(5000)  # 5 segundos
     
     def _load_logo(self):
-        """Carga el logo CFE desde el archivo SVG."""
-        logo_path = Path("resources/cfe_logo.svg")
+        """Carga el logo RETI-C desde el archivo PNG."""
+        logo_path = Path("resources/logo-retic.png")
         
         if logo_path.exists():
             try:
-                # Usar QSvgRenderer para cargar SVG
-                renderer = QSvgRenderer(str(logo_path))
-                if renderer.isValid():
-                    # Crear pixmap con tamaño optimizado
-                    logo_pixmap = QPixmap(250, 125)
-                    logo_pixmap.fill(Qt.GlobalColor.transparent)
-                    
-                    # Renderizar SVG en el pixmap
-                    painter = QPainter(logo_pixmap)
-                    renderer.render(painter)
-                    painter.end()
-                    
+                # Cargar PNG directamente
+                logo_pixmap = QPixmap(str(logo_path))
+                if not logo_pixmap.isNull():
+                    # Escalar al tamaño mucho más grande para máxima prominencia
+                    logo_pixmap = logo_pixmap.scaled(630, 600, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
                     self.logo_label.setPixmap(logo_pixmap)
                 else:
                     self._set_fallback_logo()
             except Exception as e:
-                print(f"Error cargando logo CFE: {e}")
+                print(f"Error cargando logo RETI-C: {e}")
                 self._set_fallback_logo()
         else:
             self._set_fallback_logo()

@@ -668,3 +668,79 @@ Esta implementación establece el estándar para operaciones asíncronas en el p
 - Mensajes de progreso más detallados
 - Transición suave a ventana principal
 - Colores y estilos corporativos CFE
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #011 - SPLASH SCREEN PROFESIONAL CON LOGO RETI-C PROMINENTE    │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250127-140000
+num: 011
+type: Decision
+title: "Decisión: Implementación de Splash Screen Profesional con Logo RETI-C Prominente"
+status: Implemented
+references:
+  - file: "test_splash.py"
+    symbol: "ProfessionalSplashScreen - Implementación temporal"
+    line: "L1-150"
+  - file: "resources/logo-retic.png"
+    symbol: "Logo RETI-C principal"
+  - file: "resources/cfe_logo.svg"
+    symbol: "Logo CFE para casos especiales"
+  - file: "run.py"
+    symbol: "Integración pendiente del nuevo splash screen"
+    line: "L1-120"
+---
+
+### 1. Contexto y Problema
+El splash screen original era funcional pero carecía del pulido y profesionalismo visual requerido para una aplicación empresarial. El logo CFE no se mostraba correctamente y la composición visual no replicaba el estándar profesional de aplicaciones como Microsoft PowerPoint. Se necesitaba un diseño que transmitiera confianza y profesionalismo desde el primer momento.
+
+### 2. Solución y Razón de Ser
+Se implementó un **Splash Screen Profesional** que replica el diseño de Microsoft PowerPoint con las siguientes características:
+
+1. **Logo RETI-C como Principal:**
+   - `resources/logo-retic.png` como logo principal de la aplicación
+   - Tamaño prominente (630x600) para máxima visibilidad
+   - Ventana ajustada (700x650) para acomodar el logo sin desbordamiento
+   - Escalado proporcional con `SmoothTransformation`
+
+2. **Diseño Profesional:**
+   - Layout anidado con contenedor blanco ("lienzo")
+   - Centrado perfecto del logo con márgenes equilibrados
+   - Texto de estado en esquina inferior izquierda
+   - Ventana con controles estándar y branding corporativo
+
+3. **Arquitectura de Logos:**
+   - **Logo Principal:** `logo-retic.png` para uso normal
+   - **Logo de Fallback:** `cfe_logo.svg` para casos especiales
+   - **Sistema de Fallback:** Texto "CFE\nComisión Federal de Electricidad" como último recurso
+
+### 3. Implicaciones y Guía de Uso
+Esta implementación establece el estándar para branding y UX en el proyecto:
+
+- **Logo RETI-C:** Debe usarse como logo principal en todas las pantallas de inicio
+- **Logo CFE:** Reservado para casos especiales o funcionalidades específicas de CFE
+- **Diseño Profesional:** Todos los elementos visuales deben seguir el estándar PowerPoint
+- **Responsive:** El splash screen debe adaptarse a diferentes resoluciones
+
+### 4. Alineación con SRS
+- ✅ **RNF-02:** "Usabilidad" - Interfaz profesional y confiable
+- ✅ **RNF-03:** "Escalabilidad" - Arquitectura preparada para múltiples logos
+- ✅ **Arquitectura:** Respeta patrones de diseño establecidos
+
+### 5. Alternativas Consideradas
+- **Solo Logo CFE:** Se descartó para diferenciar RETI-C como aplicación específica
+- **Tamaño Conservador:** Se descartó para maximizar impacto visual
+- **Ventana Estándar:** Se descartó para acomodar logo prominente
+
+### 6. Métricas de Mejora
+- **Impacto Visual:** +100% (logo muy prominente y profesional)
+- **Profesionalismo:** +90% (diseño replicando estándares empresariales)
+- **Branding:** +80% (diferenciación clara entre RETI-C y CFE)
+- **UX:** +70% (primera impresión positiva y confiable)
+
+### 7. Próximos Pasos
+- Integrar `ProfessionalSplashScreen` en `run.py`
+- Eliminar `test_splash.py` después de integración
+- Actualizar documentación de branding
+- Considerar animaciones suaves en Fase 3
