@@ -26,11 +26,11 @@ class Config:
     STYLES_FILE = RESOURCES_DIR / "styles.qss"
     
     # Excel Configuration
-    EXCEL_FILENAME = "inventario_equipos.xlsx"
+    EXCEL_FILENAME = "RETI-C_Inventario_Equipos_CFE.xlsx"
     
     # --- Gestión de Rutas y Entornos ---
     # Ruta para el entorno de producción (será siempre el intento primario)
-    EXCEL_NETWORK_PATH = Path(r"\\10.11.1.253\publico\temporal\9MFEU\Verastegui\Info Equipos Mantenimiento\Inventario_Equipos_CFE.xlsx")  # TODO: Configurar ruta real de red corporativa
+    EXCEL_NETWORK_PATH = Path(r"\\10.11.1.253\publico\temporal\9MFEU\Verastegui\Info Equipos Mantenimiento\RETI-C_Inventario_Equipos_CFE.xlsx")  # TODO: Configurar ruta real de red corporativa
 
     # Ruta de fallback para el entorno de desarrollo o modo offline
     EXCEL_LOCAL_PATH = DATA_DIR / EXCEL_FILENAME

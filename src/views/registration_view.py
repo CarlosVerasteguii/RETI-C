@@ -91,18 +91,18 @@ class RegistrationView(QWidget):
         # Validación completa usando la lista de Config
         for required_field in Config.REQUIRED_FIELDS:
             if not data.get(required_field, '').strip():
-                QMessageBox.warning(self, Config.MSG_TITULO_CAMPOS_REQUERIDOS, 
+                QMessageBox.warning(self.window(), Config.MSG_TITULO_CAMPOS_REQUERIDOS, 
                                    Config.MSG_CAMPO_REQUERIDO.format(field_name=required_field))
                 return
 
         # Usar el método correcto del data_manager y manejar el resultado
         if self.data_manager.add_record(data):
             serial_number = data.get('Numero de Serie', '')
-            QMessageBox.information(self, Config.MSG_TITULO_EXITO, 
+            QMessageBox.information(self.window(), Config.MSG_TITULO_EXITO, 
                                    Config.MSG_EXITO_REGISTRO.format(serial_number=serial_number))
             self.clear_form()
         else:
-            QMessageBox.critical(self, Config.MSG_TITULO_ERROR_GUARDADO, Config.MSG_ERROR_GUARDADO)
+            QMessageBox.critical(self.window(), Config.MSG_TITULO_ERROR_GUARDADO, Config.MSG_ERROR_GUARDADO)
     
     def get_form_data(self) -> dict:
         """Recopila los datos de todos los widgets del formulario en un diccionario."""
