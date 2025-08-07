@@ -126,6 +126,7 @@ class ProfessionalSplashScreen(QWidget):
 
 def on_data_manager_ready(data_manager):
     """Callback de éxito del inicializador."""
+    global main_window  # Hacer main_window global para evitar garbage collection
     main_window = MainApp(data_manager)
     main_window.update_connection_status()
     main_window.show()
@@ -142,7 +143,7 @@ def on_data_manager_error(error_message):
 
 def main():
     """Punto de entrada principal que integra el splash screen profesional."""
-    global app, splash
+    global app, splash, main_window
     
     app = QApplication(sys.argv)
     
