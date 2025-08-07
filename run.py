@@ -10,220 +10,156 @@ Date: 02/08/2025
 
 import sys
 from pathlib import Path
-from PyQt6.QtWidgets import QApplication, QSplashScreen, QWidget, QVBoxLayout, QHBoxLayout, QLabel
-from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QPixmap, QFont, QPainter
-from PyQt6.QtSvg import QSvgRenderer
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap, QIcon
+
+# Mantener los imports del sistema de hilos y la app principal
 from src.main_app import MainApp
 from src.data_manager_initializer import DataManagerInitializer
 from src.config import Config
 
 
-class CustomSplashScreen(QWidget):
+class ProfessionalSplashScreen(QWidget):
     """
-    Splash screen personalizado que replica exactamente el estilo de Microsoft PowerPoint.
+    La implementación visualmente superior del splash screen, ahora integrada en producción.
     """
-    
     def __init__(self):
         super().__init__()
+        
+        # --- Configuración de la Ventana ---
+        self.setFixedSize(*Config.SPLASH_WINDOW_SIZE)
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint)
         self.setWindowTitle("RETI-C - Iniciando...")
-        self.setFixedSize(600, 400)
-        
-        # Configurar como ventana estándar (sin efectos de transparencia)
-        self.setWindowFlags(Qt.WindowType.Window)
-        
-        # Layout principal
+
+        icon_path = Config.RESOURCES_DIR / "app_icon.ico"
+        if icon_path.exists():
+            self.setWindowIcon(QIcon(str(icon_path)))
+
+        # --- Layouts y Contenedor ---
         main_layout = QVBoxLayout(self)
+        self.setLayout(main_layout)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.setSpacing(0)
         
-        # Área principal para el logo (centrada)
-        logo_container = QWidget()
-        logo_container.setFixedHeight(320)  # Área principal para logo
-        logo_layout = QVBoxLayout(logo_container)
-        logo_layout.setContentsMargins(0, 0, 0, 0)
-        logo_layout.setSpacing(0)
+        container = QWidget()
+        container.setStyleSheet("background-color: white;")
+        main_layout.addWidget(container)
         
-        # Logo CFE centrado
+        container_layout = QVBoxLayout(container)
+        container_layout.setContentsMargins(1, 1, 1, 1)
+        container_layout.setSpacing(0)
+
+        center_area = QWidget()
+        center_layout = QVBoxLayout(center_area)
+        center_layout.addStretch()
+        
         self.logo_label = QLabel()
         self.logo_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.logo_label.setFixedSize(400, 160)
-        logo_layout.addWidget(self.logo_label, 0, Qt.AlignmentFlag.AlignCenter)
+        self.logo_label.setFixedSize(*Config.SPLASH_LOGO_SIZE)
+        center_layout.addWidget(self.logo_label, alignment=Qt.AlignmentFlag.AlignCenter)
+        center_layout.addStretch()
         
-        # Agregar área de logo al layout principal
-        main_layout.addWidget(logo_container)
-        
-        # Barra de estado inferior (altura fija)
-        status_container = QWidget()
-        status_container.setFixedHeight(80)
-        status_container.setStyleSheet("""
-            QWidget {
-                background-color: #FFFFFF;
-                border-top: 1px solid #E0E0E0;
-            }
+        status_bar = QWidget()
+        status_bar.setFixedHeight(Config.SPLASH_STATUS_BAR_HEIGHT)
+        status_bar_layout = QHBoxLayout(status_bar)
+        status_bar_layout.setContentsMargins(*Config.SPLASH_STATUS_BAR_MARGINS)
+
+        self.message_label = QLabel("Iniciando RETI-C...")
+        self.message_label.setStyleSheet(f"""
+            color: {Config.COLOR_GRAY_TEXT}; 
+            font-size: {Config.SPLASH_STATUS_FONT_SIZE};
+            font-weight: normal;
+            font-family: "Segoe UI", Arial, sans-serif;
         """)
+        status_bar_layout.addWidget(self.message_label, alignment=Qt.AlignmentFlag.AlignVCenter)
+        status_bar_layout.addStretch()
+
+        container_layout.addWidget(center_area)
+        container_layout.addWidget(status_bar)
         
-        status_layout = QHBoxLayout(status_container)
-        status_layout.setContentsMargins(20, 10, 20, 20)
-        status_layout.setSpacing(0)
-        
-        # Mensaje de estado (esquina inferior izquierda)
-        self.status_label = QLabel("Iniciando RETI-C...")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
-        self.status_label.setStyleSheet("""
-            QLabel {
-                color: #666666;
-                font-size: 12pt;
-                font-family: "Segoe UI", Arial, sans-serif;
-                background-color: transparent;
-            }
-        """)
-        status_layout.addWidget(self.status_label)
-        status_layout.addStretch()  # Espacio a la derecha
-        
-        # Agregar barra de estado al layout principal
-        main_layout.addWidget(status_container)
-        
-        # Cargar logo
         self._load_logo()
-        
-        # Centrar en pantalla
         self._center_on_screen()
-        
-        # Aplicar estilos (fondo blanco puro, sin bordes)
-        self.setStyleSheet("""
-            QWidget {
-                background-color: #FFFFFF;
-            }
-        """)
-    
+
     def _load_logo(self):
-        """Carga el logo CFE desde el archivo SVG."""
-        logo_path = Path("resources/cfe_logo.svg")
+        """Carga el logo RETI-C desde el archivo PNG."""
+        logo_path = Config.RESOURCES_DIR / "logo-retic.png"  # Usar el logo correcto
         
         if logo_path.exists():
             try:
-                # Usar QSvgRenderer para cargar SVG
-                renderer = QSvgRenderer(str(logo_path))
-                if renderer.isValid():
-                    # Crear pixmap con tamaño fijo
-                    logo_pixmap = QPixmap(400, 160)
-                    logo_pixmap.fill(Qt.GlobalColor.transparent)
-                    
-                    # Renderizar SVG en el pixmap
-                    painter = QPainter(logo_pixmap)
-                    renderer.render(painter)
-                    painter.end()
-                    
-                    self.logo_label.setPixmap(logo_pixmap)
+                logo_pixmap = QPixmap(str(logo_path))
+                if not logo_pixmap.isNull():
+                    scaled_pixmap = logo_pixmap.scaled(*Config.SPLASH_LOGO_SIZE, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+                    self.logo_label.setPixmap(scaled_pixmap)
                 else:
                     self._set_fallback_logo()
             except Exception as e:
-                print(f"Error cargando logo CFE: {e}")
+                print(f"Error cargando logo RETI-C: {e}")
                 self._set_fallback_logo()
         else:
             self._set_fallback_logo()
     
     def _set_fallback_logo(self):
-        """Establece un logo de fallback si no se puede cargar el SVG."""
-        fallback_text = "CFE\nComisión Federal de Electricidad"
+        """Establece un logo de fallback si no se puede cargar el PNG."""
+        fallback_text = Config.MSG_FALLBACK_LOGO_TEXT
         self.logo_label.setText(fallback_text)
-        self.logo_label.setStyleSheet("""
-            QLabel {
-                color: #008E5A;
-                font-size: 24pt;
+        self.logo_label.setStyleSheet(f"""
+            QLabel {{
+                color: {Config.COLOR_CFE_GREEN};
+                font-size: 18pt;
                 font-weight: bold;
                 background-color: transparent;
-        }
-    """)
-    
+            }}
+        """)
+
     def _center_on_screen(self):
         """Centra la ventana en la pantalla."""
-        screen = QApplication.primaryScreen().geometry()
-        x = (screen.width() - self.width()) // 2
-        y = (screen.height() - self.height()) // 2
+        screen_geometry = QApplication.primaryScreen().geometry()
+        x = (screen_geometry.width() - self.width()) // 2
+        y = (screen_geometry.height() - self.height()) // 2
         self.move(x, y)
-    
-    def update_message(self, message):
-        """Actualiza el mensaje de estado."""
-        self.status_label.setText(f"Iniciando RETI-C...\n{message}")
+
+    def update_message(self, message: str):
+        """Actualiza el mensaje de estado (para ser llamado por el inicializador)."""
+        self.message_label.setText(message)
         QApplication.processEvents()
 
 
-def show_splash_screen():
-    """
-    Crea y muestra el splash screen personalizado con logo CFE.
-    
-    Returns:
-        CustomSplashScreen: Instancia del splash screen personalizado
-    """
-    return CustomSplashScreen()
-
-
 def on_data_manager_ready(data_manager):
-    """
-    Callback ejecutado cuando DataManager está listo.
-    
-    Args:
-        data_manager: Instancia inicializada de DataManager
-    """
-    # Crear ventana principal con DataManager listo
+    """Callback de éxito del inicializador."""
     main_window = MainApp(data_manager)
-    
-    # Actualizar estado de conexión
     main_window.update_connection_status()
-    
-    # Mostrar ventana principal
     main_window.show()
-    
-    # Cerrar splash screen
     splash.close()
 
 
 def on_data_manager_error(error_message):
-    """
-    Callback ejecutado si hay error en la inicialización.
-    
-    Args:
-        error_message: Mensaje de error
-    """
+    """Callback de error del inicializador."""
     from PyQt6.QtWidgets import QMessageBox
-    
-    # Mostrar mensaje de error
-    QMessageBox.critical(
-        None,
-        "Error de Inicialización",
-        f"No se pudo inicializar la aplicación:\n{error_message}"
-    )
+    QMessageBox.critical(None, "Error de Inicialización", f"No se pudo iniciar la aplicación:\n{error_message}")
+    # Asegurarse de cerrar el splash en caso de error para no dejarlo colgado
+    splash.close()
 
 
 def main():
-    """
-    Función principal que inicia la aplicación con splash screen personalizado.
-    """
+    """Punto de entrada principal que integra el splash screen profesional."""
     global app, splash
     
-    # Crear aplicación
     app = QApplication(sys.argv)
     
-    # Mostrar splash screen personalizado
-    splash = show_splash_screen()
+    # Usar la nueva y unificada clase de splash screen
+    splash = ProfessionalSplashScreen()
     splash.show()
-    
-    # Procesar eventos para mostrar el splash screen inmediatamente
     app.processEvents()
     
-    # Crear inicializador de DataManager en hilo separado
+    # El sistema de hilos y señales de `run.py` se mantiene, es la parte robusta.
     initializer = DataManagerInitializer()
     
     # Conectar señales
     initializer.finished.connect(on_data_manager_ready)
     initializer.error.connect(on_data_manager_error)
     
-    # Iniciar inicialización en hilo separado
     initializer.start()
     
-    # Ejecutar aplicación
     sys.exit(app.exec())
 
 

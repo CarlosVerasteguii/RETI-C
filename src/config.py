@@ -98,6 +98,17 @@ class Config:
     UI_VIEW_MARGINS = (40, 40, 40, 40)  # left, top, right, bottom
     UI_LAYOUT_SPACING = 20
     
+    SPLASH_WINDOW_SIZE = (700, 650)
+
+    # Al final de la sección "Dimensiones de Componentes UI"
+    SPLASH_LOGO_SIZE = (630, 600)
+    SPLASH_STATUS_BAR_HEIGHT = 40
+    SPLASH_STATUS_BAR_MARGINS = (20, 0, 20, 5)
+    SPLASH_STATUS_FONT_SIZE = "10pt"
+
+    # Al final de la sección "Mensajes y Textos de la UI"
+    MSG_FALLBACK_LOGO_TEXT = "RETI-C\nComisión Federal de Electricidad"
+    
     @classmethod
     def ensure_directories(cls):
         """Ensure all required directories exist."""
