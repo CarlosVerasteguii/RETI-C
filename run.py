@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPixmap, QIcon
+from PyQt6.QtGui import QPixmap, QIcon, QGuiApplication
 
 # Mantener los imports del sistema de hilos y la app principal
 from src.main_app import MainApp
@@ -129,7 +129,7 @@ def on_data_manager_ready(data_manager):
     global main_window  # Hacer main_window global para evitar garbage collection
     main_window = MainApp(data_manager)
     main_window.update_connection_status()
-    main_window.show()
+    main_window.showMaximized()
     splash.close()
 
 
@@ -144,6 +144,11 @@ def on_data_manager_error(error_message):
 def main():
     """Punto de entrada principal que integra el splash screen profesional."""
     global app, splash, main_window
+    
+    # Aplicar política HiDPI ANTES de crear la aplicación para evitar warnings
+    QGuiApplication.setHighDpiScaleFactorRoundingPolicy(
+        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+    )
     
     app = QApplication(sys.argv)
     

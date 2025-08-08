@@ -9,6 +9,7 @@ Date: 02/08/2025
 
 import os
 from pathlib import Path
+from PyQt6.QtGui import QColor
 
 
 class Config:
@@ -89,14 +90,26 @@ class Config:
     COLOR_CFE_BLACK = "#111111"          # Negro CFE
     COLOR_GRAY_TEXT = "#666666"          # Gris para texto secundario
     COLOR_GRAY_LIGHT_BG = "#f8f9fa"      # Gris claro para fondos
+    COLOR_CFE_BORDER = "#D7E4DF"         # Borde neutro alineado a CFE
 
     # Geometría de Ventanas
     WINDOW_MAIN_GEOMETRY = (100, 100, 950, 750)  # x, y, width, height
 
     # Dimensiones de Componentes UI
     UI_TEXTEDIT_MAX_HEIGHT = 60
-    UI_VIEW_MARGINS = (40, 40, 40, 40)  # left, top, right, bottom
-    UI_LAYOUT_SPACING = 20
+    UI_VIEW_MARGINS = (15, 15, 15, 15)  # left, top, right, bottom - Reducidos para mejor uso del espacio
+    UI_LAYOUT_SPACING = 10  # Reducido para menos espaciado entre elementos
+    
+    # Dimensiones específicas para el layout de tarjetas
+    UI_TEXTEDIT_PROBLEM_HEIGHT = 100  # Aumentado para mejor visibilidad
+    UI_TEXTEDIT_HISTORY_HEIGHT = 200  # Aumentado para mejor visibilidad
+    UI_ACTION_PANEL_HEIGHT = 52  # Footer 52px (botón 40 + padding 6/6)
+    UI_BUTTON_MIN_WIDTH = 150
+    UI_CHIP_MIN_H = 32  # Altura mínima recomendada para chips interactivos
+    UI_BUTTON_MIN_H = 44  # Altura mínima recomendada para botones
+    UI_FIELD_HEIGHT = 44  # Altura estándar para campos de entrada
+    UI_COLUMN_LEFT_RATIO = 65  # Ajustado para mejor equilibrio
+    UI_COLUMN_RIGHT_RATIO = 35  # Aumentado para dar más espacio a la columna derecha
     
     SPLASH_WINDOW_SIZE = (700, 650)
 
@@ -115,3 +128,36 @@ class Config:
         cls.DATA_DIR.mkdir(exist_ok=True)
         cls.RESOURCES_DIR.mkdir(exist_ok=True)
         cls.RESOURCES_DIR.mkdir(exist_ok=True) 
+    
+    # Márgenes y espaciados centralizados (más compactos para evitar scroll)
+    UI_PAGE_MARGINS = (12, 12, 12, 12)  # left, top, right, bottom
+    UI_PAGE_SPACING = 8
+    UI_FIELD_SPACING = 8
+    UI_FOOTER_PADDING_V = 6
+    UI_FOOTER_PADDING_H = 12
+
+    # Dimensiones del Timeline (centralizadas)
+    UI_TIMELINE_AVATAR_RADIUS = 10
+    UI_TIMELINE_LINE_WIDTH = 2
+    
+    # Tipos de Equipo del Inventario (centralizados)
+    EQUIPMENT_TYPES = [
+        "HP ProBook 440",
+        "HP ProDesk 600", 
+        "Dell Latitude 3420",
+        "Lenovo ThinkCentre"
+    ]
+    
+    # Mapping de autocompletado Tipo -> Marca y Modelo
+    EQUIPMENT_BRAND_MODEL_MAPPING = {
+        "HP ProBook 440": "HP ProBook 440",
+        "HP ProDesk 600": "HP ProDesk 600", 
+        "Dell Latitude 3420": "Dell Latitude 3420",
+        "Lenovo ThinkCentre": "Lenovo ThinkCentre"
+    }
+
+
+# Utilidades de color para UI (usadas por delegates/QPainter)
+def qcolor(hex_str: str) -> QColor:
+    """Convierte un string hex (#RRGGBB) a QColor."""
+    return QColor(hex_str)

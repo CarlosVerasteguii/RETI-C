@@ -11,7 +11,7 @@ QMainWindow {
 QLabel {
     color: #111111;
     font-family: "Arial", sans-serif;
-    font-size: 12px;
+    font-size: 15px;
 }
 
 QLabel[class="title"] {
@@ -22,52 +22,67 @@ QLabel[class="title"] {
 
 /* Form Layout */
 QFormLayout {
-    spacing: 10px;
+    spacing: 15px;
+    margin: 5px;
 }
 
 /* Line Edit */
-QLineEdit {
+QLineEdit, QComboBox {
     border: 1px solid #cccccc;
     border-radius: 4px;
-    padding: 8px;
+    padding: 10px;
     background-color: #ffffff;
     color: #111111;
-    font-size: 12px;
-    min-height: 20px;
+    font-size: 15px;
+    min-height: 44px;
+    margin-bottom: 5px;
 }
 
 QLineEdit:focus {
     border: 2px solid #008E5A;
     outline: none;
+    background-color: #f8fffc;
 }
 
 /* Date Edit */
 QDateEdit {
     border: 1px solid #cccccc;
     border-radius: 4px;
-    padding: 8px;
+    padding: 10px;
     background-color: #ffffff;
     color: #111111;
-    font-size: 12px;
-    min-height: 20px;
+    font-size: 15px;
+    min-height: 44px;
+    margin-bottom: 5px;
 }
 
 QDateEdit:focus {
     border: 2px solid #008E5A;
+    background-color: #f8fffc;
+}
+
+QDateEdit::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 20px;
+    border-left: 1px solid #cccccc;
 }
 
 /* Text Edit */
 QTextEdit {
     border: 1px solid #cccccc;
     border-radius: 4px;
-    padding: 8px;
+    padding: 10px;
     background-color: #ffffff;
     color: #111111;
-    font-size: 12px;
+    font-size: 15px;
+    margin-bottom: 5px;
+
 }
 
 QTextEdit:focus {
     border: 2px solid #008E5A;
+    background-color: #f8fffc;
 }
 
 /* Buttons */
@@ -76,10 +91,10 @@ QPushButton {
     color: #ffffff;
     border: none;
     border-radius: 4px;
-    padding: 10px 20px;
-    font-size: 12px;
+    padding: 8px 14px;
+    font-size: 15px;
     font-weight: bold;
-    min-height: 30px;
+    min-height: 44px;
 }
 
 QPushButton:hover {
@@ -123,4 +138,100 @@ QMessageBox QLabel[class="error"] {
 /* Warning Message */
 QMessageBox QLabel[class="warning"] {
     color: #ffc107;
-} 
+}
+
+/* Tarjetas (QGroupBox) */
+QGroupBox {
+    font-weight: bold;
+    border: 1px solid #008E5A;
+    border-radius: 6px;
+    margin-top: 25px;
+    padding-top: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    background-color: #FFFFFF;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 15px;
+    top: 10px;
+    padding: 0 10px;
+    color: #008E5A;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #FFFFFF;
+}
+
+/* Panel de acciones */
+/* QSS ↔ Config mapping:
+   #008E5A -> Config.COLOR_CFE_GREEN
+   #111111 -> Config.COLOR_CFE_BLACK
+   #D7E4DF -> Config.COLOR_CFE_BORDER
+*/
+#action_panel {
+    /* Altura definida por layout + Config.UI_ACTION_PANEL_HEIGHT en código */
+    background-color: #ffffff; /* = COLOR_CFE_TEXT_ON_GREEN bg neutral */
+    border-top: 1px solid #D7E4DF; /* = COLOR_CFE_BORDER */
+    margin-top: 12px;
+    /* Padding visual se maneja en el layout (Config.UI_FOOTER_PADDING_*) */
+}
+
+#action_panel QPushButton {
+    min-height: 44px; /* = Config.UI_BUTTON_MIN_H */
+    padding: 0 12px;  /* = Config.UI_FOOTER_PADDING_H */
+}
+
+/* Botones específicos */
+#primary_button {
+    background-color: #008E5A;
+    color: #ffffff;
+    border-radius: 4px;
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 150px;
+}
+
+#primary_button:hover {
+    background-color: #006B47;
+}
+
+#primary_button:pressed {
+    background-color: #004D33;
+}
+
+#secondary_button {
+    background-color: #111111;
+    color: #ffffff;
+    border-radius: 4px;
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 150px;
+}
+
+#secondary_button:hover {
+    background-color: #333333;
+}
+
+#secondary_button:pressed {
+    background-color: #000000;
+}
+
+/* Chips interactivos */
+QPushButton[variant="chip"] {
+    border-radius: 12px;
+    padding: 4px 10px;
+    min-height: 32px;
+    background: #EEF2F1;
+    color: #111111;
+    border: 1px solid #D7E4DF;
+}
+
+QPushButton[variant="chip"]:checked {
+    background: #008E5A;
+    color: #ffffff;
+    border-color: #008E5A;
+}

@@ -129,46 +129,84 @@ class MainApp(QMainWindow):
 
         # Crear instancias de las vistas con manejo de errores
         try:
+            # Dashboard siempre se puede crear
             self.dashboard_page = DashboardView()
-            
-            # Crear vistas que requieren DataManager (pueden ser None inicialmente)
-            self.registration_page = RegistrationView(self.data_manager) if self.data_manager else None
-            self.search_page = SearchView(self.data_manager) if self.data_manager else None
-
-            # Añadir las vistas al QStackedWidget en el orden deseado
             self.stacked_widget.addWidget(self.dashboard_page)    # Índice 0
             
-            # Añadir placeholders si las vistas no están disponibles
-            if self.registration_page:
-                self.stacked_widget.addWidget(self.registration_page) # Índice 1
-            else:
+            # Crear vistas que requieren DataManager (pueden ser None inicialmente)
+            try:
+                self.registration_page = RegistrationView(self.data_manager) if self.data_manager else None
+                if self.registration_page:
+                    self.stacked_widget.addWidget(self.registration_page) # Índice 1
+                else:
+                    from PyQt6.QtWidgets import QLabel
+                    placeholder_reg = QLabel("Cargando vista de registro...")
+                    placeholder_reg.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                    placeholder_reg.setStyleSheet("font-size: 14px; color: #666;")
+                    self.stacked_widget.addWidget(placeholder_reg)
+            except Exception as e:
+                print(f"Error al crear vista de registro: {e}")
                 from PyQt6.QtWidgets import QLabel
-                placeholder_reg = QLabel("Cargando vista de registro...")
+                placeholder_reg = QLabel("Error al cargar vista de registro")
                 placeholder_reg.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                placeholder_reg.setStyleSheet("font-size: 14px; color: #ff0000;")
                 self.stacked_widget.addWidget(placeholder_reg)
                 
-            if self.search_page:
-                self.stacked_widget.addWidget(self.search_page)       # Índice 2
-            else:
+            try:
+                self.search_page = SearchView(self.data_manager) if self.data_manager else None
+                if self.search_page:
+                    self.stacked_widget.addWidget(self.search_page)       # Índice 2
+                else:
+                    from PyQt6.QtWidgets import QLabel
+                    placeholder_search = QLabel("Cargando vista de búsqueda...")
+                    placeholder_search.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                    placeholder_search.setStyleSheet("font-size: 14px; color: #666;")
+                    self.stacked_widget.addWidget(placeholder_search)
+            except Exception as e:
+                print(f"Error al crear vista de búsqueda: {e}")
                 from PyQt6.QtWidgets import QLabel
-                placeholder_search = QLabel("Cargando vista de búsqueda...")
+                placeholder_search = QLabel("Error al cargar vista de búsqueda")
                 placeholder_search.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                placeholder_search.setStyleSheet("font-size: 14px; color: #ff0000;")
                 self.stacked_widget.addWidget(placeholder_search)
             
         except Exception as e:
-            print(f"Error al crear las vistas: {e}")
+            print(f"Error crítico al crear las vistas: {e}")
             # En caso de error, mostrar mensaje pero no crashear
             from PyQt6.QtWidgets import QLabel
             error_label = QLabel(f"Error al cargar las vistas: {e}")
             error_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            error_label.setStyleSheet("font-size: 14px; color: #ff0000;")
             self.stacked_widget.addWidget(error_label)
 
     def setup_navigation_signals(self):
         """Conecta las señales de navegación entre vistas."""
-        self.btn_dashboard.clicked.connect(lambda: self.navigate_to_view(0))
-        self.btn_registro.clicked.connect(lambda: self.navigate_to_view(1))
-        self.btn_busqueda.clicked.connect(lambda: self.navigate_to_view(2))
+        try:
+            self.btn_dashboard.clicked.connect(lambda: self.navigate_to_view(0))
+            self.btn_registro.clicked.connect(lambda: self.navigate_to_view(1))
+            self.btn_busqueda.clicked.connect(lambda: self.navigate_to_view(2))
+        except Exception as e:
+            print(f"Error al conectar señales de navegación: {e}")
+            # Si hay error, intentar conectar las señales de forma más simple
+            try:
+                self.btn_dashboard.clicked.connect(self._navigate_dashboard)
+                self.btn_registro.clicked.connect(self._navigate_registration)
+                self.btn_busqueda.clicked.connect(self._navigate_search)
+            except Exception as e2:
+                print(f"Error crítico al conectar señales: {e2}")
 
+    def _navigate_dashboard(self):
+        """Navegación al dashboard."""
+        self.navigate_to_view(0)
+
+    def _navigate_registration(self):
+        """Navegación al registro."""
+        self.navigate_to_view(1)
+
+    def _navigate_search(self):
+        """Navegación a la búsqueda."""
+        self.navigate_to_view(2)
+    
     def navigate_to_view(self, index: int):
         """
         Navega a la vista especificada y actualiza el estado visual de los botones.

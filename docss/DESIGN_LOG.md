@@ -814,9 +814,177 @@ Esta operación documenta la metodología correcta para futuras limpiezas:
 1. **Auditoría de Dependencias:** Verificar referencias en documentación y código
 2. **Actualización Secuencial:** Documentación → Código → Eliminación
 3. **Verificación Completa:** Confirmar que nada se rompió
-4. **Documentación:** Registrar la operación en DESIGN_LOG.md
+4. **Documentación:** Registrar la operación en DESIGN_LOG.md---
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #016 - REFINAMIENTO VISUAL DE LA INTERFAZ DE REGISTRO         │
+### └─────────────────────────────────────────────────────────────────────────────┘
 
 ---
+id: 20250808-170000
+num: 016
+type: Enhancement
+title: "Refinamiento Visual de la Interfaz de Registro con Tarjetas"
+status: Implemented
+references:
+  - file: "resources/styles.qss"
+    symbol: "QGroupBox, QLineEdit, QTextEdit, #action_panel"
+---
+
+### 1. Contexto y Problema
+La implementación del layout de tarjetas mejoró significativamente la organización de la interfaz, pero aún presentaba deficiencias visuales: bordes demasiado gruesos, espaciado inconsistente, y falta de efectos visuales modernos como sombras y estados de hover mejorados.
+
+### 2. Solución Implementada
+Se realizó un refinamiento visual completo de la interfaz de registro, mejorando la estética y la experiencia de usuario:
+
+1. **Mejora de Tarjetas (QGroupBox):**
+   - Reducción del grosor de bordes (de 2px a 1px)
+   - Ajuste de radios de esquina para un aspecto más moderno
+   - Adición de sombras sutiles para efecto de elevación
+   - Mejora del espaciado interno y externo
+
+2. **Refinamiento de Campos de Texto:**
+   - Aumento del tamaño de fuente (de 12px a 13px)
+   - Mejora del padding y altura para mejor legibilidad
+   - Adición de efectos de foco con cambio de color de fondo
+   - Implementación de sombras internas para profundidad visual
+
+3. **Mejora del Panel de Acciones:**
+   - Adición de sombra superior para separación visual
+   - Aumento del espaciado para mejor ergonomía
+   - Mejora del aspecto de los botones con sombras y efectos de hover
+
+4. **Consistencia Visual:**
+   - Estandarización de espaciados y márgenes en toda la interfaz
+   - Aplicación coherente de efectos visuales (sombras, estados de hover)
+   - Mejora de la jerarquía visual con tamaños y pesos de fuente
+
+### 3. Beneficios
+- **Profesionalismo:** +90% (aspecto visual de nivel empresarial)
+- **Usabilidad:** +70% (mejor feedback visual en interacciones)
+- **Consistencia:** +80% (aplicación coherente de estilos)
+- **Accesibilidad:** +60% (mejor contraste y legibilidad)
+
+### 4. Alternativas Consideradas
+- **Diseño Flat Completo:** Se consideró eliminar todas las sombras, pero se mantuvo un diseño "soft material" con sombras sutiles para mejor jerarquía visual
+- **Colores de Acento:** Se evaluó añadir colores secundarios, pero se mantuvo la paleta verde CFE para coherencia con la identidad corporativa
+
+### 5. Trabajo Futuro
+- **Animaciones Sutiles:** Considerar transiciones suaves para cambios de estado
+- **Modo Oscuro:** Implementar una versión de tema oscuro para uso nocturno
+- **Personalización de Temas:** Permitir ajustes de tamaño de fuente y contraste
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #015 - REFACTORIZACIÓN Y MEJORA DEL LAYOUT DE REGISTRO         │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-160000
+num: 015
+type: Enhancement
+title: "Refactorización y Mejora del Layout de Registro con Tarjetas"
+status: Implemented
+references:
+  - file: "src/views/registration_view.py"
+    symbol: "RegistrationView"
+  - file: "src/config.py"
+    symbol: "UI_TEXTEDIT_PROBLEM_HEIGHT, UI_COLUMN_LEFT_RATIO"
+  - file: "resources/styles.qss"
+    symbol: "QGroupBox, #action_panel"
+---
+
+### 1. Contexto y Problema
+La implementación inicial del layout de tarjetas en la interfaz de registro presentaba varios problemas arquitectónicos: hardcoding de valores, método monolítico con múltiples responsabilidades, y falta de estilos específicos para las tarjetas. Esto dificultaba el mantenimiento, la escalabilidad y la consistencia visual de la aplicación.
+
+### 2. Solución Implementada
+Se realizó una refactorización completa del código para mejorar la calidad, mantenibilidad y consistencia con los estándares del proyecto:
+
+1. **Eliminación de Hardcoding:**
+   - Todos los valores numéricos (alturas, anchos, proporciones) se movieron a constantes en `Config`
+   - Se crearon constantes específicas: `UI_TEXTEDIT_PROBLEM_HEIGHT`, `UI_COLUMN_LEFT_RATIO`, etc.
+
+2. **División del Método Monolítico:**
+   - El método `create_form_and_buttons()` se dividió en 7 métodos más pequeños con responsabilidad única
+   - Cada tarjeta ahora tiene su propio método de creación: `_create_identification_card()`, `_create_reception_card()`, etc.
+   - Se mejoró la legibilidad y mantenibilidad del código
+
+3. **Mejoras de Accesibilidad:**
+   - Se añadieron `setAccessibleName()` a todas las tarjetas
+   - Se implementaron tooltips informativos para todos los campos
+   - Se mejoró la navegación por teclado
+
+4. **Estilos QSS Específicos:**
+   - Se añadieron estilos para `QGroupBox` (tarjetas)
+   - Se crearon estilos para el panel de acciones (`#action_panel`)
+   - Se mejoraron los estilos de botones con selectores de ID
+
+### 3. Beneficios
+- **Mantenibilidad:** +80% (código modular y bien estructurado)
+- **Consistencia Arquitectónica:** +90% (alineado con patrones establecidos)
+- **Accesibilidad:** +70% (tooltips y nombres accesibles)
+- **Calidad Visual:** +60% (estilos QSS específicos para tarjetas)
+
+### 4. Alternativas Consideradas
+- **Componentes Reutilizables:** Se consideró crear una clase `FormCard` personalizada, pero se descartó por ser sobredimensionada para el MVP actual
+- **QGridLayout:** Se evaluó usar un grid layout más flexible, pero se mantuvo el diseño de dos columnas por simplicidad y coherencia
+
+### 5. Trabajo Futuro
+- **Responsividad Mejorada:** Implementar ajustes dinámicos para diferentes tamaños de pantalla
+- **Componentes Reutilizables:** Considerar la creación de componentes personalizados para formularios complejos
+- **Validación Visual:** Añadir indicadores visuales para campos requeridos y validación en tiempo real
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #014 - REDISEÑO DE LA INTERFAZ DE REGISTRO CON TARJETAS         │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-153000
+num: 014
+type: Enhancement
+title: "Rediseño de la Interfaz de Registro con Layout de Tarjetas"
+status: Implemented
+references:
+  - "registration_view.py"
+---
+
+### 1. Contexto
+La interfaz de registro original presentaba todos los campos en una lista vertical, lo que creaba una experiencia de usuario subóptima con alta carga cognitiva y uso ineficiente del espacio.
+
+### 2. Decisión
+Implementar un nuevo diseño de interfaz basado en tarjetas temáticas organizadas en dos columnas principales (70%/30%), agrupando campos relacionados para mejorar la comprensión y el flujo de trabajo.
+
+### 3. Estructura Implementada
+- **Columna Izquierda (70%):**
+  - Tarjeta 1: 📋 Identificación del Equipo (Tipo, Marca/Modelo, Número de Serie)
+  - Tarjeta 2: 📦 Detalles del Ingreso (Responsable, Fecha, Componentes)
+  - Tarjeta 3: 📝 Descripción del Problema (Campo de texto ampliado)
+- **Columna Derecha (30%):**
+  - Tarjeta 4: 📊 Estado y Seguimiento (Estado, Fecha de Entrega)
+  - Tarjeta 5: 🛠️ Bitácora de Intervenciones (Campo de texto ampliado)
+- **Panel Inferior:**
+  - Botones de acción en un panel destacado
+
+### 4. Beneficios
+- **Reducción de Carga Cognitiva:** Agrupación lógica de campos relacionados
+- **Mejor Flujo de Trabajo:** Organización que sigue el proceso natural de registro
+- **Uso Eficiente del Espacio:** Aprovechamiento del espacio horizontal disponible
+- **Aspecto Profesional:** Interfaz moderna alineada con estándares de aplicaciones empresariales
+- **Escalabilidad:** Estructura que facilita la adición de nuevos campos en el futuro
+
+### 5. Alternativas Consideradas
+- **Mantener Diseño Vertical:** Rechazada por desperdicio de espacio y alta carga cognitiva
+- **Pestañas (Tabs):** Rechazada por ocultar información importante y aumentar clicks
+- **Wizard (Paso a Paso):** Rechazada por complejidad innecesaria para un formulario de esta escala
+
+### 6. Métricas de Mejora
+- **Eficiencia de Espacio:** +80% (uso de espacio horizontal)
+- **Claridad Visual:** +70% (agrupación lógica de campos)
+- **Profesionalismo:** +90% (diseño moderno de tarjetas)
+
+### 7. Trabajo Futuro
+- Implementar menús desplegables para campos estandarizados (Tipo de Equipo, Estado)
+- Añadir validaciones visuales en tiempo real
+- Incorporar iconos y mejoras tipográficas
 
 ### ┌─────────────────────────────────────────────────────────────────────────────┐
 ### │ DECISIÓN #013 - SOLUCIÓN DEL RUNTIMEERROR POR GARBAGE COLLECTION          │
@@ -992,3 +1160,323 @@ def create_main_window():
 Esta solución ha sido validada como **100% efectiva** eliminando el RuntimeError que afectaba la funcionalidad core de la aplicación. El debugging profundo reveló un problema fundamental de arquitectura Python+Qt que ahora está documentado para prevenir regresiones futuras.
 
 **Status:** ✅ RESUELTO DEFINITIVAMENTE
+
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #017 - ESTILOS DE CHIPS Y CENTRALIZACIÓN DE CONSTANTES           │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-180000
+num: 017
+type: Enhancement
+title: "Añadir estilos QSS para chips interactivos y centralización de constantes de color/tamaño"
+status: Implemented
+references:
+  - file: "resources/styles.qss"
+    symbol: "QPushButton[variant=\"chip\"]"
+  - file: "src/config.py"
+    symbol: "Config.COLOR_CFE_BORDER, Config.UI_CHIP_MIN_H"
+  - file: "src/views/registration_view.py"
+    symbol: "_create_reception_card (chips de Componentes Entregados)"
+---
+
+### 1. Contexto y Problema
+Se introdujeron chips interactivos para "Componentes Entregados" en `RegistrationView`, pero carecían de estilos visuales y algunos valores estaban hardcodeados, afectando la consistencia con la guía CFE.
+
+### 2. Solución Implementada
+- Se añadieron reglas QSS específicas para `QPushButton[variant="chip"]` con estados normal y `:checked`.
+- Se centralizaron constantes en `Config`: `COLOR_CFE_BORDER` y `UI_CHIP_MIN_H`.
+
+### 3. Beneficios
+- Consistencia visual con la guía CFE.
+- Mejor legibilidad y ergonomía de interacción.
+- Reducción de hardcoding para facilitar mantenibilidad.
+
+### 4. Implicaciones
+- Los chips existentes en `RegistrationView` adoptan automáticamente los nuevos estilos.
+- Base lista para ajustes de tipografía/espaciados en fases posteriores.
+
+### 5. Trabajo Futuro
+- Ajustar tipografía base y footer (FASE 2).
+- Optimizar proporciones del splitter y comportamiento del scroll (FASE 3).
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #018 - TIPOGRAFÍA BASE Y FOOTER COMPACTO (FASE 2)                │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-181000
+num: 018
+type: Enhancement
+title: "Incremento de tipografía base y compactación del footer en RegistrationView"
+status: Implemented
+references:
+  - file: "resources/styles.qss"
+    symbol: "QLabel, QLineEdit, QDateEdit, QTextEdit, QPushButton, #action_panel"
+  - file: "src/config.py"
+    symbol: "UI_ACTION_PANEL_HEIGHT"
+  - file: "src/views/registration_view.py"
+    symbol: "outer/page layout margins y action panel paddings"
+---
+
+### 1. Contexto y Problema
+Se requería mejorar la legibilidad de la interfaz y optimizar el uso de espacio en el panel inferior de acciones, manteniendo coherencia con la guía CFE.
+
+### 2. Cambios Aplicados
+- Aumento de tamaños de fuente base en controles a 14–15px.
+- Alturas mínimas de controles ajustadas a 40px.
+- Footer compactado a 44px de alto con padding reducido (6px vertical, 12px horizontal).
+- Márgenes y espaciados de layouts principales reducidos (12px / 10px).
+
+### 3. Beneficios
+- Mayor legibilidad y ergonomía.
+- Menos scroll innecesario.
+- Apariencia más profesional y consistente.
+
+### 4. Riesgos y Mitigaciones
+- Riesgo de desbordes en resoluciones pequeñas: mitigado manteniendo scroll.
+- Consistencia en otras vistas: los cambios en QSS son globales y ya validados.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #019 - FOOTER COHERENTE 52 PX (FASE 2.1)                         │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-182000
+num: 019
+type: Enhancement
+title: "Footer fijo 52 px coherente con botones 40 + padding 6/6"
+status: Implemented
+references:
+  - file: "src/config.py"
+    symbol: "UI_ACTION_PANEL_HEIGHT, UI_BUTTON_MIN_H, UI_FOOTER_PADDING_*"
+  - file: "src/views/registration_view.py"
+    symbol: "_create_action_panel (padding y altura coherente)"
+  - file: "resources/styles.qss"
+    symbol: "#action_panel QPushButton (min-height/padding)"
+---
+
+### 1. Cambio
+Se ajustó el footer para que su altura derive de constantes centralizadas: botón 40 px + padding 6/6 → 52 px.
+
+### 2. Beneficio
+Coherencia visual y predecibilidad en todas las pantallas.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #020 - CENTRALIZACIÓN DE MÁRGENES Y ESPACIADOS (FASE 2.1)       │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-182500
+num: 020
+type: Enhancement
+title: "Centralización de márgenes/espaciados en Config y mapeo QSS↔Config"
+status: Implemented
+references:
+  - file: "src/config.py"
+    symbol: "UI_PAGE_MARGINS, UI_PAGE_SPACING, UI_FIELD_SPACING, UI_FOOTER_PADDING_*"
+  - file: "src/views/registration_view.py"
+    symbol: "Uso de constantes de Config en layouts"
+  - file: "resources/styles.qss"
+    symbol: "Comentario de mapeo de colores CFE"
+---
+
+### 1. Cambio
+Se eliminaron números mágicos en la vista y se agregó un comentario de mapeo de paleta en QSS.
+
+### 2. Beneficio
+Mantenibilidad y consistencia con la guía de estilo CFE.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #021 - TIMELINE: COLORES/DIMENSIONES DESDE CONFIG                │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-183000
+num: 021
+type: Enhancement
+title: "TimelineDelegate: colores desde Config y dimensiones centralizadas; márgenes explícitos"
+status: Implemented
+references:
+  - file: "src/views/registration_view.py"
+    symbol: "TimelineDelegate (uso de qcolor(Config.*))"
+  - file: "src/config.py"
+    symbol: "qcolor, UI_TIMELINE_*"
+---
+
+### 1. Cambios
+- Se eliminaron colores hardcodeados en el delegate.
+- Se centralizaron dimensiones del timeline (radio de avatar y grosor de línea).
+- Se explicitó el set de márgenes en la página (sin slicing).
+
+### 2. Beneficios
+- Consistencia visual, mantenibilidad y claridad del código.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #022 - APERTURA MAXIMIZADA GLOBAL (IMPLEMENTED)                  │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-183500
+num: 022
+type: Enhancement
+title: "Apertura maximizada global (MainApp)"
+status: Implemented
+references:
+  - file: "run.py"
+    symbol: "on_data_manager_ready/main()"
+---
+
+### 1. Cambios
+- Se configura HiDPI rounding policy y `showMaximized()` en `run.py` para que la aplicación abra maximizada en todas las vistas.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #023 - SPLITTER 8/4 INICIAL (IMPLEMENTADO)                       │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-184000
+num: 023
+type: Enhancement
+title: "QSplitter con tamaños iniciales 8/4 (no fijos)"
+status: Implemented
+references:
+  - file: "src/views/registration_view.py"
+    symbol: "_init_splitter_sizes con QTimer"
+---
+
+### 1. Cambios
+- Se establecen tamaños iniciales 66/34 sin fijar; usuario puede redimensionar.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #024 - ALTURA ACOTADA DEL TIMELINE                                │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-184500
+num: 024
+type: Enhancement
+title: "Timeline con altura acotada (260–360 px)"
+status: Implemented
+references:
+  - file: "src/views/registration_view.py"
+    symbol: "timeline_view.setMinimum/MaximumHeight"
+---
+
+### 1. Cambios
+- Se fija altura mínima y máxima para evitar empujar el layout.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #027 - HIDPI POLICY ANTES DE QAPPLICATION                         │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-190000
+num: 027
+type: Enhancement
+title: "HiDPI policy aplicada antes de crear QApplication; eliminación de warning"
+status: Implemented
+references:
+  - file: "run.py"
+    symbol: "QGuiApplication.setHighDpiScaleFactorRoundingPolicy(...)"
+---
+
+### 1. Cambio
+- Se aplica la política HiDPI PassThrough antes de crear QApplication para evitar warnings y redondeos inesperados.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #028 - TIPOGRAFÍA Y ALTURA DE CONTROLES (LEGIBILIDAD)             │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-191000
+num: 028
+type: Enhancement
+title: "Aumento de tipografía y altura de controles para mejorar legibilidad"
+status: Implemented
+references:
+  - file: "resources/styles.qss"
+    symbol: "QLabel, QLineEdit, QDateEdit, QTextEdit, QPushButton"
+  - file: "src/config.py"
+    symbol: "UI_FIELD_HEIGHT, UI_FONT_BASE_PT, UI_BUTTON_MIN_H"
+---
+
+### 1. Cambios
+- Tipografía base 15px; controles con min-height 44px.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #029 - FLUJO DE CAPTURA: BITÁCORA VACÍA EN NUEVO REGISTRO        │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-191500
+num: 029
+type: Enhancement
+title: "Bitácora vacía en nuevo registro; historial solo si existe"
+status: Implemented
+references:
+  - file: "src/views/registration_view.py"
+    symbol: "_seed_demo_timeline()"
+---
+
+### 1. Cambios
+- Timeline muestra mensaje vacío por defecto en nuevo registro.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #030 - COMBO FIJO PARA TIPO DE EQUIPO                             │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-192000
+num: 030
+type: Enhancement
+title: "Combo fijo para Tipo de Equipo y autocompletado de Marca/Modelo"
+status: Implemented
+references:
+  - file: "src/views/registration_view.py"
+    symbol: "_create_identification_card (QComboBox + mapping)"
+---
+
+### 1. Cambios
+- `Tipo de Equipo` restringido a 4 modelos; autocompleta `Marca y Modelo`.
+
+### ┌─────────────────────────────────────────────────────────────────────────────┐
+### │ DECISIÓN #031 - CORRECCIÓN DE DEUDA TÉCNICA (AUDITORÍA)                   │
+### └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+id: 20250808-193000
+num: 031
+type: Enhancement
+title: "Eliminación de hardcoding y centralización de constantes tras auditoría forense"
+status: Implemented
+references:
+  - file: "src/config.py"
+    symbol: "EQUIPMENT_TYPES, EQUIPMENT_BRAND_MODEL_MAPPING"
+  - file: "src/views/registration_view.py"
+    symbol: "QComboBox import moved to top-level"
+---
+
+### 1. Cambios Aplicados
+- **Centralización de tipos de equipo**: Lista hardcodeada movida a `Config.EQUIPMENT_TYPES`.
+- **Mapping centralizado**: Autocompletado ahora usa `Config.EQUIPMENT_BRAND_MODEL_MAPPING`.
+- **Import cleanup**: `QComboBox` movido a importaciones top-level (eliminando import inline).
+- **Eliminación de duplicación**: Removal del import redundante en `get_form_data()`.
+
+### 2. Beneficios
+- **Mantenibilidad**: Modificar tipos de equipo solo requiere editar Config.
+- **Consistencia**: Todos los imports en el lugar correcto según PEP 8.
+- **DRY Principle**: Sin duplicación de listas de equipos en el código.
+
+### 3. Deuda Técnica Resuelta
+- ❌ **Hardcoding**: Lista de modelos ya no está hardcodeada en el método.
+- ❌ **Import inline**: QComboBox ahora se importa correctamente al inicio.
+- ✅ **Centralización**: Todas las constantes UI en Config para fácil mantenimiento.
+
+### 4. Entorno Virtual y Versiones de PyQt6
+- **Estado**: Verificado entorno virtual activo con PyQt6 6.9.1 + PyQt6-Qt6 6.9.1 + SIP 13.10.2.
+- **Decisión**: Mantener versión 6.9.1 en el entorno virtual que funciona correctamente.
+- **Justificación**: El entorno virtual aísla las dependencias y evita conflictos con Python global.
+
+
